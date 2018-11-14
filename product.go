@@ -44,7 +44,7 @@ type Product struct {
 	Tags                           string          `json:"tags,omitempty"`
 	Options                        []ProductOption `json:"options,omitempty"`
 	Variants                       []Variant       `json:"variants,omitempty"`
-	Image                          Image           `json:"image,omitempty"`
+	Image                          *Image          `json:"image,omitempty"`
 	Images                         []Image         `json:"images,omitempty"`
 	TemplateSuffix                 string          `json:"template_suffix,omitempty"`
 	MetafieldsGlobalTitleTag       string          `json:"metafields_global_title_tag,omitempty"`
