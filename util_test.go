@@ -1,6 +1,9 @@
 package goshopify
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestShopFullName(t *testing.T) {
 	cases := []struct {
@@ -95,6 +98,56 @@ func TestFulfillmentPathPrefix(t *testing.T) {
 		actual := FulfillmentPathPrefix(c.resource, c.resourceID)
 		if actual != c.expected {
 			t.Errorf("FulfillmentPathPrefix(%s, %d): expected %s, actual %s", c.resource, c.resourceID, c.expected, actual)
+		}
+	}
+}
+
+func TestBool(t *testing.T) {
+	cases := []struct {
+		value    bool
+		expected string
+	}{
+		{
+			true,
+			"*bool",
+		},
+		{
+			false,
+			"*bool",
+		},
+	}
+
+	for _, c := range cases {
+		actual := reflect.TypeOf(Bool(c.value)).String()
+		if actual != c.expected {
+			t.Errorf("Bool(%v): expected %s, actual %s", c.value, c.expected, actual)
+		}
+	}
+}
+
+func TestBoolValue(t *testing.T) {
+	cases := []struct {
+		value    *bool
+		expected string
+	}{
+		{
+			Bool(true),
+			"bool",
+		},
+		{
+			Bool(false),
+			"bool",
+		},
+		{
+			nil,
+			"bool",
+		},
+	}
+
+	for _, c := range cases {
+		actual := reflect.TypeOf(BoolValue(c.value)).String()
+		if actual != c.expected {
+			t.Errorf("BoolValue(%v): expected %s, actual %s", c.value, c.expected, actual)
 		}
 	}
 }

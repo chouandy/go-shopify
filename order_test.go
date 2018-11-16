@@ -431,7 +431,7 @@ func TestOrderCreateFulfillment(t *testing.T) {
 			"https://shipping.xyz/track.php?num=123456789",
 			"https://anothershipper.corp/track.php?code=abc",
 		},
-		NotifyCustomer: true,
+		NotifyCustomer: Bool(true),
 	}
 
 	returnedFulfillment, err := client.Order.CreateFulfillment(1, fulfillment)
