@@ -104,7 +104,7 @@ type Order struct {
 	NoteAttributes        []NoteAttribute  `json:"note_attributes,omitempty"`
 	DiscountCodes         []DiscountCode   `json:"discount_codes,omitempty"`
 	LineItems             []LineItem       `json:"line_items,omitempty"`
-	ShippingLines         []ShippingLines  `json:"shipping_lines,omitempty"`
+	ShippingLines         []ShippingLine   `json:"shipping_lines,omitempty"`
 	Transactions          []Transaction    `json:"transactions,omitempty"`
 	AppID                 int              `json:"app_id,omitempty"`
 	CustomerLocale        string           `json:"customer_locale,omitempty"`
@@ -214,7 +214,7 @@ type PaymentDetails struct {
 	CreditCardCompany string `json:"credit_card_company,omitempty"`
 }
 
-type ShippingLines struct {
+type ShippingLine struct {
 	ID                            int              `json:"id,omitempty"`
 	Title                         string           `json:"title,omitempty"`
 	Price                         *decimal.Decimal `json:"price,omitempty"`
