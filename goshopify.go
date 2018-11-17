@@ -53,6 +53,7 @@ type Client struct {
 	CustomCollection           CustomCollectionService
 	Customer                   CustomerService
 	CustomerAddress            CustomerAddressService
+	FulfillmentService         FulfillmentServiceAPI
 	Image                      ImageService
 	Metafield                  MetafieldAPI
 	Order                      OrderAPI
@@ -191,6 +192,7 @@ func NewClient(app App, shopName, token string) *Client {
 	c.CustomerAddress = &CustomerAddressServiceOp{client: c}
 	c.Image = &ImageServiceOp{client: c}
 	c.Metafield = &MetafieldAPIOp{client: c}
+	c.FulfillmentService = &FulfillmentServiceAPIOp{client: c}
 	c.Order = &OrderAPIOp{client: c}
 	c.Page = &PageServiceOp{client: c}
 	c.Product = &ProductServiceOp{client: c}
