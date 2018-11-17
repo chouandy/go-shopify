@@ -223,6 +223,29 @@ func TestOrderCreate(t *testing.T) {
 	}
 }
 
+func TestOrderUpdate(t *testing.T) {
+	setup()
+	defer teardown()
+
+	httpmock.RegisterResponder("PUT", "https://fooshop.myshopify.com/admin/orders/1.json",
+		httpmock.NewStringResponder(201, `{"order":{"id": 1}}`))
+
+	order := Order{
+		ID:   1,
+		Note: "note",
+	}
+
+	o, err := client.Order.Update(order)
+	if err != nil {
+		t.Errorf("Order.Update returned error: %v", err)
+	}
+
+	expected := Order{ID: 1}
+	if o.ID != expected.ID {
+		t.Errorf("Order.Update returned id %d, expected %d", o.ID, expected.ID)
+	}
+}
+
 func TestOrderListMetafields(t *testing.T) {
 	setup()
 	defer teardown()

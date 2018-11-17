@@ -59,8 +59,8 @@ func TransactionTests(t *testing.T, transaction Transaction) {
 
 	// Check that the Test value is assigned to the returned transaction
 	expectedTest := true
-	if transaction.Test != expectedTest {
-		t.Errorf("Transaction.Test returned %+v, expected %+v", transaction.Test, expectedTest)
+	if BoolValue(transaction.Test) != expectedTest {
+		t.Errorf("Transaction.Test returned %+v, expected %+v", BoolValue(transaction.Test), expectedTest)
 	}
 
 	// Check that the Authorization value is assigned to the returned transaction

@@ -18,6 +18,7 @@ type OrderService interface {
 	Count(interface{}) (int, error)
 	Get(int, interface{}) (*Order, error)
 	Create(Order) (*Order, error)
+	Update(Order) (*Order, error)
 
 	// MetafieldsService used for Order resource to communicate with Metafields resource
 	MetafieldsService
@@ -85,7 +86,7 @@ type Order struct {
 	SubtotalPrice         *decimal.Decimal `json:"subtotal_price,omitempty"`
 	TotalDiscounts        *decimal.Decimal `json:"total_discounts,omitempty"`
 	TotalLineItemsPrice   *decimal.Decimal `json:"total_line_items_price,omitempty"`
-	TaxesIncluded         bool             `json:"taxes_included,omitempty"`
+	TaxesIncluded         *bool            `json:"taxes_included,omitempty"`
 	TotalTax              *decimal.Decimal `json:"total_tax,omitempty"`
 	TaxLines              []TaxLine        `json:"tax_lines,omitempty"`
 	TotalWeight           int              `json:"total_weight,omitempty"`
@@ -97,9 +98,9 @@ type Order struct {
 	Number                int              `json:"number,omitempty"`
 	OrderNumber           int              `json:"order_number,omitempty"`
 	Note                  string           `json:"note,omitempty"`
-	Test                  bool             `json:"test,omitempty"`
+	Test                  *bool            `json:"test,omitempty"`
 	BrowserIp             string           `json:"browser_ip,omitempty"`
-	BuyerAcceptsMarketing bool             `json:"buyer_accepts_marketing,omitempty"`
+	BuyerAcceptsMarketing *bool            `json:"buyer_accepts_marketing,omitempty"`
 	CancelReason          string           `json:"cancel_reason,omitempty"`
 	NoteAttributes        []NoteAttribute  `json:"note_attributes,omitempty"`
 	DiscountCodes         []DiscountCode   `json:"discount_codes,omitempty"`
@@ -120,7 +121,7 @@ type Order struct {
 	UserId                int              `json:"user_id,omitempty"`
 	OrderStatusUrl        string           `json:"order_status_url,omitempty"`
 	Gateway               string           `json:"gateway,omitempty"`
-	Confirmed             bool             `json:"confirmed,omitempty"`
+	Confirmed             *bool            `json:"confirmed,omitempty"`
 	TotalPriceUSD         *decimal.Decimal `json:"total_price_usd,omitempty"`
 	CheckoutToken         string           `json:"checkout_token,omitempty"`
 	Reference             string           `json:"reference,omitempty"`
@@ -171,14 +172,14 @@ type LineItem struct {
 	Name                       string           `json:"name,omitempty"`
 	SKU                        string           `json:"sku,omitempty"`
 	Vendor                     string           `json:"vendor,omitempty"`
-	GiftCard                   bool             `json:"gift_card,omitempty"`
-	Taxable                    bool             `json:"taxable,omitempty"`
+	GiftCard                   *bool            `json:"gift_card,omitempty"`
+	Taxable                    *bool            `json:"taxable,omitempty"`
 	FulfillmentService         string           `json:"fulfillment_service,omitempty"`
-	RequiresShipping           bool             `json:"requires_shipping,omitempty"`
+	RequiresShipping           *bool            `json:"requires_shipping,omitempty"`
 	VariantInventoryManagement string           `json:"variant_inventory_management,omitempty"`
 	PreTaxPrice                *decimal.Decimal `json:"pre_tax_price,omitempty"`
 	Properties                 []NoteAttribute  `json:"properties,omitempty"`
-	ProductExists              bool             `json:"product_exists,omitempty"`
+	ProductExists              *bool            `json:"product_exists,omitempty"`
 	FulfillableQuantity        int              `json:"fulfillable_quantity,omitempty"`
 	Grams                      int              `json:"grams,omitempty"`
 	FulfillmentStatus          string           `json:"fulfillment_status,omitempty"`
@@ -242,7 +243,7 @@ type Transaction struct {
 	Status         string           `json:"status,omitempty"`
 	Message        string           `json:"message,omitempty"`
 	CreatedAt      *time.Time       `json:"created_at,omitempty"`
-	Test           bool             `json:"test,omitempty"`
+	Test           *bool            `json:"test,omitempty"`
 	Authorization  string           `json:"authorization,omitempty"`
 	Currency       string           `json:"currency,omitempty"`
 	LocationID     *int             `json:"location_id,omitempty"`
@@ -268,7 +269,7 @@ type Refund struct {
 	OrderId         int              `json:"order_id,omitempty"`
 	CreatedAt       *time.Time       `json:"created_at,omitempty"`
 	Note            string           `json:"note,omitempty"`
-	Restock         bool             `json:"restock,omitempty"`
+	Restock         *bool            `json:"restock,omitempty"`
 	UserId          int              `json:"user_id,omitempty"`
 	RefundLineItems []RefundLineItem `json:"refund_line_items,omitempty"`
 	Transactions    []Transaction    `json:"transactions,omitempty"`
@@ -311,6 +312,15 @@ func (s *OrderServiceOp) Create(order Order) (*Order, error) {
 	wrappedData := OrderResource{Order: &order}
 	resource := new(OrderResource)
 	err := s.client.Post(path, wrappedData, resource)
+	return resource.Order, err
+}
+
+// Update order
+func (s *OrderServiceOp) Update(order Order) (*Order, error) {
+	path := fmt.Sprintf("%s/%d.json", ordersBasePath, order.ID)
+	wrappedData := OrderResource{Order: &order}
+	resource := new(OrderResource)
+	err := s.client.Put(path, wrappedData, resource)
 	return resource.Order, err
 }
 
