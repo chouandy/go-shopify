@@ -17,16 +17,15 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
-const (
-	UserAgent = "goshopify/1.0.0"
-)
+// UserAgent user agent
+const UserAgent = "goshopify"
 
 // App represents basic app settings such as Api key, secret, scope, and redirect url.
 // See oauth.go for OAuth related helper functions.
 type App struct {
-	ApiKey      string
-	ApiSecret   string
-	RedirectUrl string
+	APIKey      string
+	APISecret   string
+	RedirectURL string
 	Scope       string
 	Password    string
 }
@@ -48,30 +47,30 @@ type Client struct {
 	token string
 
 	// Services used for communicating with the API
-	Product                    ProductService
+	ApplicationCharge          ApplicationChargeAPI
+	Asset                      AssetService
+	Blog                       BlogService
 	CustomCollection           CustomCollectionService
-	SmartCollection            SmartCollectionService
 	Customer                   CustomerService
 	CustomerAddress            CustomerAddressService
-	Order                      OrderService
-	Shop                       ShopService
-	Webhook                    WebhookService
-	Variant                    VariantService
 	Image                      ImageService
-	Transaction                TransactionService
-	Theme                      ThemeService
-	Asset                      AssetService
-	ScriptTag                  ScriptTagService
-	RecurringApplicationCharge RecurringApplicationChargeService
 	Metafield                  MetafieldService
-	Blog                       BlogService
-	ApplicationCharge          ApplicationChargeService
-	Redirect                   RedirectService
+	Order                      OrderService
 	Page                       PageService
+	Product                    ProductService
+	RecurringApplicationCharge RecurringApplicationChargeService
+	Redirect                   RedirectService
+	ScriptTag                  ScriptTagService
+	Shop                       ShopService
+	SmartCollection            SmartCollectionService
 	StorefrontAccessToken      StorefrontAccessTokenService
+	Theme                      ThemeService
+	Transaction                TransactionService
+	Variant                    VariantService
+	Webhook                    WebhookService
 }
 
-// A general response error that follows a similar layout to Shopify's response
+// ResponseError a general response error that follows a similar layout to Shopify's response
 // errors, i.e. either a single message or a list of messages.
 type ResponseError struct {
 	Status  int
@@ -106,17 +105,17 @@ func (e ResponseDecodingError) Error() string {
 	return e.Message
 }
 
-// An error specific to a rate-limiting response. Embeds the ResponseError to
+// RateLimitError an error specific to a rate-limiting response. Embeds the ResponseError to
 // allow consumers to handle it the same was a normal ResponseError.
 type RateLimitError struct {
 	ResponseError
 	RetryAfter int
 }
 
-// Creates an API request. A relative URL can be provided in urlStr, which will
-// be resolved to the BaseURL of the Client. Relative URLS should always be
-// specified without a preceding slash. If specified, the value pointed to by
-// body is JSON encoded and included as the request body.
+// NewRequest creates an API request. A relative URL can be provided in urlStr,
+// which will be resolved to the BaseURL of the Client. Relative URLS should
+// always be specified without a preceding slash. If specified, the value
+// pointed to by body is JSON encoded and included as the request body.
 func (c *Client) NewRequest(method, urlStr string, body, options interface{}) (*http.Request, error) {
 	rel, err := url.Parse(urlStr)
 	if err != nil {
@@ -142,7 +141,7 @@ func (c *Client) NewRequest(method, urlStr string, body, options interface{}) (*
 	}
 
 	// A bit of JSON ceremony
-	var js []byte = nil
+	var js []byte
 
 	if body != nil {
 		js, err = json.Marshal(body)
@@ -162,7 +161,7 @@ func (c *Client) NewRequest(method, urlStr string, body, options interface{}) (*
 	if c.token != "" {
 		req.Header.Add("X-Shopify-Access-Token", c.token)
 	} else if c.app.Password != "" {
-		req.SetBasicAuth(c.app.ApiKey, c.app.Password)
+		req.SetBasicAuth(c.app.APIKey, c.app.Password)
 	}
 	return req, nil
 }
@@ -175,7 +174,7 @@ func (a App) NewClient(shopName, token string) *Client {
 	return NewClient(a, shopName, token)
 }
 
-// Returns a new Shopify API client with an already authenticated shopname and
+// NewClient returns a new Shopify API client with an already authenticated shopname and
 // token. The shopName parameter is the shop's myshopify domain,
 // e.g. "theshop.myshopify.com", or simply "theshop"
 func NewClient(app App, shopName, token string) *Client {
@@ -184,27 +183,27 @@ func NewClient(app App, shopName, token string) *Client {
 	baseURL, _ := url.Parse(ShopBaseUrl(shopName))
 
 	c := &Client{Client: httpClient, app: app, baseURL: baseURL, token: token}
-	c.Product = &ProductServiceOp{client: c}
+	c.ApplicationCharge = &ApplicationChargeAPIOp{client: c}
+	c.Asset = &AssetServiceOp{client: c}
+	c.Blog = &BlogServiceOp{client: c}
 	c.CustomCollection = &CustomCollectionServiceOp{client: c}
-	c.SmartCollection = &SmartCollectionServiceOp{client: c}
 	c.Customer = &CustomerServiceOp{client: c}
 	c.CustomerAddress = &CustomerAddressServiceOp{client: c}
-	c.Order = &OrderServiceOp{client: c}
-	c.Shop = &ShopServiceOp{client: c}
-	c.Webhook = &WebhookServiceOp{client: c}
-	c.Variant = &VariantServiceOp{client: c}
 	c.Image = &ImageServiceOp{client: c}
-	c.Transaction = &TransactionServiceOp{client: c}
-	c.Theme = &ThemeServiceOp{client: c}
-	c.Asset = &AssetServiceOp{client: c}
-	c.ScriptTag = &ScriptTagServiceOp{client: c}
-	c.RecurringApplicationCharge = &RecurringApplicationChargeServiceOp{client: c}
 	c.Metafield = &MetafieldServiceOp{client: c}
-	c.Blog = &BlogServiceOp{client: c}
-	c.ApplicationCharge = &ApplicationChargeServiceOp{client: c}
-	c.Redirect = &RedirectServiceOp{client: c}
+	c.Order = &OrderServiceOp{client: c}
 	c.Page = &PageServiceOp{client: c}
+	c.Product = &ProductServiceOp{client: c}
+	c.RecurringApplicationCharge = &RecurringApplicationChargeServiceOp{client: c}
+	c.Redirect = &RedirectServiceOp{client: c}
+	c.ScriptTag = &ScriptTagServiceOp{client: c}
+	c.Shop = &ShopServiceOp{client: c}
+	c.SmartCollection = &SmartCollectionServiceOp{client: c}
 	c.StorefrontAccessToken = &StorefrontAccessTokenServiceOp{client: c}
+	c.Theme = &ThemeServiceOp{client: c}
+	c.Transaction = &TransactionServiceOp{client: c}
+	c.Variant = &VariantServiceOp{client: c}
+	c.Webhook = &WebhookServiceOp{client: c}
 
 	return c
 }
@@ -249,6 +248,7 @@ func wrapSpecificError(r *http.Response, err ResponseError) error {
 	return err
 }
 
+// CheckResponseError check response error
 func CheckResponseError(r *http.Response) error {
 	if r.StatusCode >= 200 && r.StatusCode < 300 {
 		return nil
@@ -336,7 +336,7 @@ func CheckResponseError(r *http.Response) error {
 	return wrapSpecificError(r, responseError)
 }
 
-// General list options that can be used for most collections of entities.
+// ListOptions general list options that can be used for most collections of entities.
 type ListOptions struct {
 	Page         int       `url:"page,omitempty"`
 	Limit        int       `url:"limit,omitempty"`
@@ -350,7 +350,7 @@ type ListOptions struct {
 	IDs          []int     `url:"ids,omitempty,comma"`
 }
 
-// General count options that can be used for most collection counts.
+// CountOptions general count options that can be used for most collection counts.
 type CountOptions struct {
 	CreatedAtMin time.Time `url:"created_at_min,omitempty"`
 	CreatedAtMax time.Time `url:"created_at_max,omitempty"`
@@ -358,6 +358,7 @@ type CountOptions struct {
 	UpdatedAtMax time.Time `url:"updated_at_max,omitempty"`
 }
 
+// Count count
 func (c *Client) Count(path string, options interface{}) (int, error) {
 	resource := struct {
 		Count int `json:"count"`

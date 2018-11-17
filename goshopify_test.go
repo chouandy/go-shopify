@@ -34,9 +34,9 @@ func (errReader) Close() error {
 
 func setup() {
 	app = App{
-		ApiKey:      "apikey",
-		ApiSecret:   "hush",
-		RedirectUrl: "https://example.com/callback",
+		APIKey:      "apikey",
+		APISecret:   "hush",
+		RedirectURL: "https://example.com/callback",
 		Scope:       "read_products",
 		Password:    "privateapppassword",
 	}
@@ -175,8 +175,8 @@ func TestNewRequestForPrivateApp(t *testing.T) {
 
 	// Test Basic Auth Set
 	username, password, ok := req.BasicAuth()
-	if username != app.ApiKey {
-		t.Errorf("NewRequestPrivateApp() Username = %v, expected %v", username, app.ApiKey)
+	if username != app.APIKey {
+		t.Errorf("NewRequestPrivateApp() Username = %v, expected %v", username, app.APIKey)
 	}
 
 	if password != app.Password {

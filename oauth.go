@@ -23,8 +23,8 @@ func (app App) AuthorizeUrl(shopName string, state string) string {
 	shopUrl, _ := url.Parse(ShopBaseUrl(shopName))
 	shopUrl.Path = "/admin/oauth/authorize"
 	query := shopUrl.Query()
-	query.Set("client_id", app.ApiKey)
-	query.Set("redirect_uri", app.RedirectUrl)
+	query.Set("client_id", app.APIKey)
+	query.Set("redirect_uri", app.RedirectURL)
 	query.Set("scope", app.Scope)
 	query.Set("state", state)
 	shopUrl.RawQuery = query.Encode()
@@ -41,8 +41,8 @@ func (app App) GetAccessToken(shopName string, code string) (string, error) {
 		ClientSecret string `json:"client_secret"`
 		Code         string `json:"code"`
 	}{
-		ClientId:     app.ApiKey,
-		ClientSecret: app.ApiSecret,
+		ClientId:     app.APIKey,
+		ClientSecret: app.APISecret,
 		Code:         code,
 	}
 
@@ -56,7 +56,7 @@ func (app App) GetAccessToken(shopName string, code string) (string, error) {
 
 // Verify a message against a message HMAC
 func (app App) VerifyMessage(message, messageMAC string) bool {
-	mac := hmac.New(sha256.New, []byte(app.ApiSecret))
+	mac := hmac.New(sha256.New, []byte(app.APISecret))
 	mac.Write([]byte(message))
 	expectedMAC := mac.Sum(nil)
 
@@ -86,7 +86,7 @@ func (app App) VerifyWebhookRequest(httpRequest *http.Request) bool {
 	shopifySha256 := httpRequest.Header.Get(shopifyChecksumHeader)
 	actualMac := []byte(shopifySha256)
 
-	mac := hmac.New(sha256.New, []byte(app.ApiSecret))
+	mac := hmac.New(sha256.New, []byte(app.APISecret))
 	requestBody, _ := ioutil.ReadAll(httpRequest.Body)
 	httpRequest.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 	mac.Write(requestBody)
@@ -100,8 +100,8 @@ func (app App) VerifyWebhookRequest(httpRequest *http.Request) bool {
 // The body of the request is still readable after invoking the method.
 // This method has more verbose error output which is useful for debugging.
 func (app App) VerifyWebhookRequestVerbose(httpRequest *http.Request) (bool, error) {
-	if app.ApiSecret == "" {
-		return false, errors.New("ApiSecret is empty")
+	if app.APISecret == "" {
+		return false, errors.New("APISecret is empty")
 	}
 
 	shopifySha256 := httpRequest.Header.Get(shopifyChecksumHeader)
@@ -117,7 +117,7 @@ func (app App) VerifyWebhookRequestVerbose(httpRequest *http.Request) (bool, err
 		return false, fmt.Errorf("received HMAC is not of length 32, it is of length %d", len(decodedReceivedHMAC))
 	}
 
-	mac := hmac.New(sha256.New, []byte(app.ApiSecret))
+	mac := hmac.New(sha256.New, []byte(app.APISecret))
 	requestBody, err := ioutil.ReadAll(httpRequest.Body)
 	if err != nil {
 		return false, err

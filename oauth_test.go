@@ -7,8 +7,9 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"gopkg.in/jarcoal/httpmock.v1"
 	"net/http"
+
+	"gopkg.in/jarcoal/httpmock.v1"
 )
 
 func TestAppAuthorizeUrl(t *testing.T) {
@@ -190,14 +191,14 @@ func TestVerifyWebhookRequestVerbose(t *testing.T) {
 	}
 
 	// Other error cases
-	oldSecret := app.ApiSecret
-	app.ApiSecret = ""
+	oldSecret := app.APISecret
+	app.APISecret = ""
 	isValid, err := app.VerifyWebhookRequestVerbose(req)
-	if err == nil || isValid == true || err.Error() != errors.New("ApiSecret is empty").Error() {
-		t.Errorf("Expected error %s got nil or true", errors.New("ApiSecret is empty"))
+	if err == nil || isValid == true || err.Error() != errors.New("APISecret is empty").Error() {
+		t.Errorf("Expected error %s got nil or true", errors.New("APISecret is empty"))
 	}
 
-	app.ApiSecret = oldSecret
+	app.APISecret = oldSecret
 
 	req.Body = errReader{}
 	isValid, err = app.VerifyWebhookRequestVerbose(req)

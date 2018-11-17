@@ -29,9 +29,9 @@ Something like this will work:
 ```go
 // Create an app somewhere.
 app := goshopify.App{
-    ApiKey: "abcd",
-    ApiSecret: "efgh",
-    RedirectUrl: "https://example.com/shopify/callback",
+    APIKey: "abcd",
+    APISecret: "efgh",
+    RedirectURL: "https://example.com/shopify/callback",
     Scope: "read_products,read_orders",
 }
 
@@ -67,9 +67,9 @@ With a permanent access token, you can make API calls like this:
 ```go
 // Create an app somewhere.
 app := goshopify.App{
-    ApiKey: "abcd",
-    ApiSecret: "efgh",
-    RedirectUrl: "https://example.com/shopify/callback",
+    APIKey: "abcd",
+    APISecret: "efgh",
+    RedirectURL: "https://example.com/shopify/callback",
     Scope: "read_products",
 }
 
@@ -87,7 +87,7 @@ Private Shopify apps use basic authentication and do not require going through t
 ```go
 // Create an app somewhere.
 app := goshopify.App{
-	ApiKey: "apikey",
+	APIKey: "apikey",
 	Password: "apipassword",
 }
 
@@ -168,9 +168,10 @@ In order to be sure that a webhook is sent from ShopifyApi you could easily veri
 it with the `VerifyWebhookRequest` method.
 
 For example:
+
 ```go
 func ValidateWebhook(httpRequest *http.Request) (bool) {
-    shopifyApp := goshopify.App{ApiSecret: "ratz"}
+    shopifyApp := goshopify.App{APISecret: "ratz"}
     return shopifyApp.VerifyWebhookRequest(httpRequest)
 }
 ```
