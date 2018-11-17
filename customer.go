@@ -23,8 +23,8 @@ type CustomerService interface {
 	Delete(int) error
 	ListOrders(int, interface{}) ([]Order, error)
 
-	// MetafieldsService used for Customer resource to communicate with Metafields resource
-	MetafieldsService
+	// MetafieldsAPI used for Customer resource to communicate with Metafields resource
+	MetafieldsAPI
 }
 
 // CustomerServiceOp handles communication with the product related methods of
@@ -48,7 +48,7 @@ type Customer struct {
 	TotalSpent          *decimal.Decimal   `json:"total_spent,omitempty"`
 	Phone               string             `json:"phone,omitempty"`
 	Tags                string             `json:"tags,omitempty"`
-	LastOrderId         int                `json:"last_order_id,omitempty"`
+	LastOrderID         int                `json:"last_order_id,omitempty"`
 	LastOrderName       string             `json:"last_order_name,omitempty"`
 	AcceptsMarketing    bool               `json:"accepts_marketing,omitempty"`
 	DefaultAddress      *CustomerAddress   `json:"default_address,omitempty"`
@@ -58,17 +58,17 @@ type Customer struct {
 	Metafields          []Metafield        `json:"metafields,omitempty"`
 }
 
-// Represents the result from the customers/X.json endpoint
+// CustomerResource represents the result from the customers/X.json endpoint
 type CustomerResource struct {
 	Customer *Customer `json:"customer"`
 }
 
-// Represents the result from the customers.json endpoint
+// CustomersResource represents the result from the customers.json endpoint
 type CustomersResource struct {
 	Customers []Customer `json:"customers"`
 }
 
-// Represents the options available when searching for a customer
+// CustomerSearchOptions represents the options available when searching for a customer
 type CustomerSearchOptions struct {
 	Page   int    `url:"page,omitempty"`
 	Limit  int    `url:"limit,omitempty"`
@@ -131,40 +131,40 @@ func (s *CustomerServiceOp) Search(options interface{}) ([]Customer, error) {
 	return resource.Customers, err
 }
 
-// List metafields for a customer
+// ListMetafields list metafields for a customer
 func (s *CustomerServiceOp) ListMetafields(customerID int, options interface{}) ([]Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customersResourceName, resourceID: customerID}
-	return metafieldService.List(options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
+	return metafieldAPI.List(options)
 }
 
-// Count metafields for a customer
+// CountMetafields count metafields for a customer
 func (s *CustomerServiceOp) CountMetafields(customerID int, options interface{}) (int, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customersResourceName, resourceID: customerID}
-	return metafieldService.Count(options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
+	return metafieldAPI.Count(options)
 }
 
-// Get individual metafield for a customer
+// GetMetafield get individual metafield for a customer
 func (s *CustomerServiceOp) GetMetafield(customerID int, metafieldID int, options interface{}) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customersResourceName, resourceID: customerID}
-	return metafieldService.Get(metafieldID, options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
+	return metafieldAPI.Get(metafieldID, options)
 }
 
-// Create a new metafield for a customer
+// CreateMetafield create a new metafield for a customer
 func (s *CustomerServiceOp) CreateMetafield(customerID int, metafield Metafield) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customersResourceName, resourceID: customerID}
-	return metafieldService.Create(metafield)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
+	return metafieldAPI.Create(metafield)
 }
 
-// Update an existing metafield for a customer
+// UpdateMetafield update an existing metafield for a customer
 func (s *CustomerServiceOp) UpdateMetafield(customerID int, metafield Metafield) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customersResourceName, resourceID: customerID}
-	return metafieldService.Update(metafield)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
+	return metafieldAPI.Update(metafield)
 }
 
-// // Delete an existing metafield for a customer
+// DeleteMetafield delete an existing metafield for a customer
 func (s *CustomerServiceOp) DeleteMetafield(customerID int, metafieldID int) error {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customersResourceName, resourceID: customerID}
-	return metafieldService.Delete(metafieldID)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
+	return metafieldAPI.Delete(metafieldID)
 }
 
 // ListOrders retrieves all orders from a customer

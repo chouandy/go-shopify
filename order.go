@@ -10,26 +10,26 @@ import (
 const ordersBasePath = "admin/orders"
 const ordersResourceName = "orders"
 
-// OrderService is an interface for interfacing with the orders endpoints of
+// OrderAPI is an interface for interfacing with the orders endpoints of
 // the Shopify API.
 // See: https://help.shopify.com/api/reference/order
-type OrderService interface {
+type OrderAPI interface {
 	List(interface{}) ([]Order, error)
 	Count(interface{}) (int, error)
 	Get(int, interface{}) (*Order, error)
 	Create(Order) (*Order, error)
 	Update(Order) (*Order, error)
 
-	// MetafieldsService used for Order resource to communicate with Metafields resource
-	MetafieldsService
+	// MetafieldsAPI used for Order resource to communicate with Metafields resource
+	MetafieldsAPI
 
-	// FulfillmentsService used for Order resource to communicate with Fulfillments resource
-	FulfillmentsService
+	// FulfillmentsAPI used for Order resource to communicate with Fulfillments resource
+	FulfillmentsAPI
 }
 
-// OrderServiceOp handles communication with the order related methods of the
+// OrderAPIOp handles communication with the order related methods of the
 // Shopify API.
-type OrderServiceOp struct {
+type OrderAPIOp struct {
 	client *Client
 }
 
@@ -285,7 +285,7 @@ type RefundLineItem struct {
 }
 
 // List orders
-func (s *OrderServiceOp) List(options interface{}) ([]Order, error) {
+func (s *OrderAPIOp) List(options interface{}) ([]Order, error) {
 	path := fmt.Sprintf("%s.json", ordersBasePath)
 	resource := new(OrdersResource)
 	err := s.client.Get(path, resource, options)
@@ -293,13 +293,13 @@ func (s *OrderServiceOp) List(options interface{}) ([]Order, error) {
 }
 
 // Count orders
-func (s *OrderServiceOp) Count(options interface{}) (int, error) {
+func (s *OrderAPIOp) Count(options interface{}) (int, error) {
 	path := fmt.Sprintf("%s/count.json", ordersBasePath)
 	return s.client.Count(path, options)
 }
 
 // Get individual order
-func (s *OrderServiceOp) Get(orderID int, options interface{}) (*Order, error) {
+func (s *OrderAPIOp) Get(orderID int, options interface{}) (*Order, error) {
 	path := fmt.Sprintf("%s/%d.json", ordersBasePath, orderID)
 	resource := new(OrderResource)
 	err := s.client.Get(path, resource, options)
@@ -307,7 +307,7 @@ func (s *OrderServiceOp) Get(orderID int, options interface{}) (*Order, error) {
 }
 
 // Create order
-func (s *OrderServiceOp) Create(order Order) (*Order, error) {
+func (s *OrderAPIOp) Create(order Order) (*Order, error) {
 	path := fmt.Sprintf("%s.json", ordersBasePath)
 	wrappedData := OrderResource{Order: &order}
 	resource := new(OrderResource)
@@ -316,7 +316,7 @@ func (s *OrderServiceOp) Create(order Order) (*Order, error) {
 }
 
 // Update order
-func (s *OrderServiceOp) Update(order Order) (*Order, error) {
+func (s *OrderAPIOp) Update(order Order) (*Order, error) {
 	path := fmt.Sprintf("%s/%d.json", ordersBasePath, order.ID)
 	wrappedData := OrderResource{Order: &order}
 	resource := new(OrderResource)
@@ -324,86 +324,86 @@ func (s *OrderServiceOp) Update(order Order) (*Order, error) {
 	return resource.Order, err
 }
 
-// List metafields for an order
-func (s *OrderServiceOp) ListMetafields(orderID int, options interface{}) ([]Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return metafieldService.List(options)
+// ListMetafields list metafields for an order
+func (s *OrderAPIOp) ListMetafields(orderID int, options interface{}) ([]Metafield, error) {
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return metafieldAPI.List(options)
 }
 
-// Count metafields for an order
-func (s *OrderServiceOp) CountMetafields(orderID int, options interface{}) (int, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return metafieldService.Count(options)
+// CountMetafields count metafields for an order
+func (s *OrderAPIOp) CountMetafields(orderID int, options interface{}) (int, error) {
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return metafieldAPI.Count(options)
 }
 
-// Get individual metafield for an order
-func (s *OrderServiceOp) GetMetafield(orderID int, metafieldID int, options interface{}) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return metafieldService.Get(metafieldID, options)
+// GetMetafield get individual metafield for an order
+func (s *OrderAPIOp) GetMetafield(orderID int, metafieldID int, options interface{}) (*Metafield, error) {
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return metafieldAPI.Get(metafieldID, options)
 }
 
-// Create a new metafield for an order
-func (s *OrderServiceOp) CreateMetafield(orderID int, metafield Metafield) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return metafieldService.Create(metafield)
+// CreateMetafield create a new metafield for an order
+func (s *OrderAPIOp) CreateMetafield(orderID int, metafield Metafield) (*Metafield, error) {
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return metafieldAPI.Create(metafield)
 }
 
-// Update an existing metafield for an order
-func (s *OrderServiceOp) UpdateMetafield(orderID int, metafield Metafield) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return metafieldService.Update(metafield)
+// UpdateMetafield update an existing metafield for an order
+func (s *OrderAPIOp) UpdateMetafield(orderID int, metafield Metafield) (*Metafield, error) {
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return metafieldAPI.Update(metafield)
 }
 
-// Delete an existing metafield for an order
-func (s *OrderServiceOp) DeleteMetafield(orderID int, metafieldID int) error {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return metafieldService.Delete(metafieldID)
+// DeleteMetafield delete an existing metafield for an order
+func (s *OrderAPIOp) DeleteMetafield(orderID int, metafieldID int) error {
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return metafieldAPI.Delete(metafieldID)
 }
 
-// List fulfillments for an order
-func (s *OrderServiceOp) ListFulfillments(orderID int, options interface{}) ([]Fulfillment, error) {
-	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return fulfillmentService.List(options)
+// ListFulfillments list fulfillments for an order
+func (s *OrderAPIOp) ListFulfillments(orderID int, options interface{}) ([]Fulfillment, error) {
+	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return fulfillmentAPI.List(options)
 }
 
-// Count fulfillments for an order
-func (s *OrderServiceOp) CountFulfillments(orderID int, options interface{}) (int, error) {
-	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return fulfillmentService.Count(options)
+// CountFulfillments count fulfillments for an order
+func (s *OrderAPIOp) CountFulfillments(orderID int, options interface{}) (int, error) {
+	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return fulfillmentAPI.Count(options)
 }
 
-// Get individual fulfillment for an order
-func (s *OrderServiceOp) GetFulfillment(orderID int, fulfillmentID int, options interface{}) (*Fulfillment, error) {
-	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return fulfillmentService.Get(fulfillmentID, options)
+// GetFulfillment get individual fulfillment for an order
+func (s *OrderAPIOp) GetFulfillment(orderID int, fulfillmentID int, options interface{}) (*Fulfillment, error) {
+	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return fulfillmentAPI.Get(fulfillmentID, options)
 }
 
-// Create a new fulfillment for an order
-func (s *OrderServiceOp) CreateFulfillment(orderID int, fulfillment Fulfillment) (*Fulfillment, error) {
-	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return fulfillmentService.Create(fulfillment)
+// CreateFulfillment create a new fulfillment for an order
+func (s *OrderAPIOp) CreateFulfillment(orderID int, fulfillment Fulfillment) (*Fulfillment, error) {
+	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return fulfillmentAPI.Create(fulfillment)
 }
 
-// Update an existing fulfillment for an order
-func (s *OrderServiceOp) UpdateFulfillment(orderID int, fulfillment Fulfillment) (*Fulfillment, error) {
-	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return fulfillmentService.Update(fulfillment)
+// UpdateFulfillment update an existing fulfillment for an order
+func (s *OrderAPIOp) UpdateFulfillment(orderID int, fulfillment Fulfillment) (*Fulfillment, error) {
+	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return fulfillmentAPI.Update(fulfillment)
 }
 
-// Complete an existing fulfillment for an order
-func (s *OrderServiceOp) CompleteFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
-	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return fulfillmentService.Complete(fulfillmentID)
+// CompleteFulfillment complete an existing fulfillment for an order
+func (s *OrderAPIOp) CompleteFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
+	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return fulfillmentAPI.Complete(fulfillmentID)
 }
 
-// Transition an existing fulfillment for an order
-func (s *OrderServiceOp) TransitionFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
-	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return fulfillmentService.Transition(fulfillmentID)
+// OpenFulfillment open an existing fulfillment for an order
+func (s *OrderAPIOp) OpenFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
+	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return fulfillmentAPI.Open(fulfillmentID)
 }
 
-// Cancel an existing fulfillment for an order
-func (s *OrderServiceOp) CancelFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
-	fulfillmentService := &FulfillmentServiceOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
-	return fulfillmentService.Cancel(fulfillmentID)
+// CancelFulfillment cancel an existing fulfillment for an order
+func (s *OrderAPIOp) CancelFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
+	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return fulfillmentAPI.Cancel(fulfillmentID)
 }

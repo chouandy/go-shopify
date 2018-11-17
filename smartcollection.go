@@ -19,8 +19,8 @@ type SmartCollectionService interface {
 	Update(SmartCollection) (*SmartCollection, error)
 	Delete(int) error
 
-	// MetafieldsService used for SmartCollection resource to communicate with Metafields resource
-	MetafieldsService
+	// MetafieldsAPI used for SmartCollection resource to communicate with Metafields resource
+	MetafieldsAPI
 }
 
 // SmartCollectionServiceOp handles communication with the smart collection
@@ -109,38 +109,38 @@ func (s *SmartCollectionServiceOp) Delete(collectionID int) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", smartCollectionsBasePath, collectionID))
 }
 
-// List metafields for a smart collection
+// ListMetafields list metafields for a smart collection
 func (s *SmartCollectionServiceOp) ListMetafields(smartCollectionID int, options interface{}) ([]Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
-	return metafieldService.List(options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
+	return metafieldAPI.List(options)
 }
 
-// Count metafields for a smart collection
+// CountMetafields count metafields for a smart collection
 func (s *SmartCollectionServiceOp) CountMetafields(smartCollectionID int, options interface{}) (int, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
-	return metafieldService.Count(options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
+	return metafieldAPI.Count(options)
 }
 
-// Get individual metafield for a smart collection
+// GetMetafield get individual metafield for a smart collection
 func (s *SmartCollectionServiceOp) GetMetafield(smartCollectionID int, metafieldID int, options interface{}) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
-	return metafieldService.Get(metafieldID, options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
+	return metafieldAPI.Get(metafieldID, options)
 }
 
-// Create a new metafield for a smart collection
+// CreateMetafield create a new metafield for a smart collection
 func (s *SmartCollectionServiceOp) CreateMetafield(smartCollectionID int, metafield Metafield) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
-	return metafieldService.Create(metafield)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
+	return metafieldAPI.Create(metafield)
 }
 
-// Update an existing metafield for a smart collection
+// UpdateMetafield update an existing metafield for a smart collection
 func (s *SmartCollectionServiceOp) UpdateMetafield(smartCollectionID int, metafield Metafield) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
-	return metafieldService.Update(metafield)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
+	return metafieldAPI.Update(metafield)
 }
 
-// // Delete an existing metafield for a smart collection
+// DeleteMetafield delete an existing metafield for a smart collection
 func (s *SmartCollectionServiceOp) DeleteMetafield(smartCollectionID int, metafieldID int) error {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
-	return metafieldService.Delete(metafieldID)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: smartCollectionsResourceName, resourceID: smartCollectionID}
+	return metafieldAPI.Delete(metafieldID)
 }

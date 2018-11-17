@@ -54,8 +54,8 @@ type Client struct {
 	Customer                   CustomerService
 	CustomerAddress            CustomerAddressService
 	Image                      ImageService
-	Metafield                  MetafieldService
-	Order                      OrderService
+	Metafield                  MetafieldAPI
+	Order                      OrderAPI
 	Page                       PageService
 	Product                    ProductService
 	RecurringApplicationCharge RecurringApplicationChargeService
@@ -190,8 +190,8 @@ func NewClient(app App, shopName, token string) *Client {
 	c.Customer = &CustomerServiceOp{client: c}
 	c.CustomerAddress = &CustomerAddressServiceOp{client: c}
 	c.Image = &ImageServiceOp{client: c}
-	c.Metafield = &MetafieldServiceOp{client: c}
-	c.Order = &OrderServiceOp{client: c}
+	c.Metafield = &MetafieldAPIOp{client: c}
+	c.Order = &OrderAPIOp{client: c}
 	c.Page = &PageServiceOp{client: c}
 	c.Product = &ProductServiceOp{client: c}
 	c.RecurringApplicationCharge = &RecurringApplicationChargeServiceOp{client: c}

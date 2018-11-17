@@ -5,37 +5,37 @@ import (
 	"time"
 )
 
-// FulfillmentService is an interface for interfacing with the fulfillment endpoints
+// FulfillmentAPI is an interface for interfacing with the fulfillment endpoints
 // of the Shopify API.
 // https://help.shopify.com/api/reference/fulfillment
-type FulfillmentService interface {
+type FulfillmentAPI interface {
 	List(interface{}) ([]Fulfillment, error)
 	Count(interface{}) (int, error)
 	Get(int, interface{}) (*Fulfillment, error)
 	Create(Fulfillment) (*Fulfillment, error)
 	Update(Fulfillment) (*Fulfillment, error)
 	Complete(int) (*Fulfillment, error)
-	Transition(int) (*Fulfillment, error)
+	Open(int) (*Fulfillment, error)
 	Cancel(int) (*Fulfillment, error)
 }
 
-// FulfillmentsService is an interface for other Shopify resources
+// FulfillmentsAPI is an interface for other Shopify resources
 // to interface with the fulfillment endpoints of the Shopify API.
 // https://help.shopify.com/api/reference/fulfillment
-type FulfillmentsService interface {
+type FulfillmentsAPI interface {
 	ListFulfillments(int, interface{}) ([]Fulfillment, error)
 	CountFulfillments(int, interface{}) (int, error)
 	GetFulfillment(int, int, interface{}) (*Fulfillment, error)
 	CreateFulfillment(int, Fulfillment) (*Fulfillment, error)
 	UpdateFulfillment(int, Fulfillment) (*Fulfillment, error)
 	CompleteFulfillment(int, int) (*Fulfillment, error)
-	TransitionFulfillment(int, int) (*Fulfillment, error)
+	OpenFulfillment(int, int) (*Fulfillment, error)
 	CancelFulfillment(int, int) (*Fulfillment, error)
 }
 
-// FulfillmentServiceOp handles communication with the fulfillment
+// FulfillmentAPIOp handles communication with the fulfillment
 // related methods of the Shopify API.
-type FulfillmentServiceOp struct {
+type FulfillmentAPIOp struct {
 	client     *Client
 	resource   string
 	resourceID int
@@ -54,8 +54,8 @@ type Fulfillment struct {
 	ShipmentStatus  string     `json:"shipment_status,omitempty"`
 	TrackingNumber  string     `json:"tracking_number,omitempty"`
 	TrackingNumbers []string   `json:"tracking_numbers,omitempty"`
-	TrackingUrl     string     `json:"tracking_url,omitempty"`
-	TrackingUrls    []string   `json:"tracking_urls,omitempty"`
+	TrackingURL     string     `json:"tracking_url,omitempty"`
+	TrackingURLs    []string   `json:"tracking_urls,omitempty"`
 	Receipt         *Receipt   `json:"receipt,omitempty"`
 	LineItems       []LineItem `json:"line_items,omitempty"`
 	NotifyCustomer  *bool      `json:"notify_customer,omitempty"`
@@ -78,7 +78,7 @@ type FulfillmentsResource struct {
 }
 
 // List fulfillments
-func (s *FulfillmentServiceOp) List(options interface{}) ([]Fulfillment, error) {
+func (s *FulfillmentAPIOp) List(options interface{}) ([]Fulfillment, error) {
 	prefix := FulfillmentPathPrefix(s.resource, s.resourceID)
 	path := fmt.Sprintf("%s.json", prefix)
 	resource := new(FulfillmentsResource)
@@ -87,14 +87,14 @@ func (s *FulfillmentServiceOp) List(options interface{}) ([]Fulfillment, error) 
 }
 
 // Count fulfillments
-func (s *FulfillmentServiceOp) Count(options interface{}) (int, error) {
+func (s *FulfillmentAPIOp) Count(options interface{}) (int, error) {
 	prefix := FulfillmentPathPrefix(s.resource, s.resourceID)
 	path := fmt.Sprintf("%s/count.json", prefix)
 	return s.client.Count(path, options)
 }
 
 // Get individual fulfillment
-func (s *FulfillmentServiceOp) Get(fulfillmentID int, options interface{}) (*Fulfillment, error) {
+func (s *FulfillmentAPIOp) Get(fulfillmentID int, options interface{}) (*Fulfillment, error) {
 	prefix := FulfillmentPathPrefix(s.resource, s.resourceID)
 	path := fmt.Sprintf("%s/%d.json", prefix, fulfillmentID)
 	resource := new(FulfillmentResource)
@@ -103,7 +103,7 @@ func (s *FulfillmentServiceOp) Get(fulfillmentID int, options interface{}) (*Ful
 }
 
 // Create a new fulfillment
-func (s *FulfillmentServiceOp) Create(fulfillment Fulfillment) (*Fulfillment, error) {
+func (s *FulfillmentAPIOp) Create(fulfillment Fulfillment) (*Fulfillment, error) {
 	prefix := FulfillmentPathPrefix(s.resource, s.resourceID)
 	path := fmt.Sprintf("%s.json", prefix)
 	wrappedData := FulfillmentResource{Fulfillment: &fulfillment}
@@ -113,7 +113,7 @@ func (s *FulfillmentServiceOp) Create(fulfillment Fulfillment) (*Fulfillment, er
 }
 
 // Update an existing fulfillment
-func (s *FulfillmentServiceOp) Update(fulfillment Fulfillment) (*Fulfillment, error) {
+func (s *FulfillmentAPIOp) Update(fulfillment Fulfillment) (*Fulfillment, error) {
 	prefix := FulfillmentPathPrefix(s.resource, s.resourceID)
 	path := fmt.Sprintf("%s/%d.json", prefix, fulfillment.ID)
 	wrappedData := FulfillmentResource{Fulfillment: &fulfillment}
@@ -123,7 +123,7 @@ func (s *FulfillmentServiceOp) Update(fulfillment Fulfillment) (*Fulfillment, er
 }
 
 // Complete an existing fulfillment
-func (s *FulfillmentServiceOp) Complete(fulfillmentID int) (*Fulfillment, error) {
+func (s *FulfillmentAPIOp) Complete(fulfillmentID int) (*Fulfillment, error) {
 	prefix := FulfillmentPathPrefix(s.resource, s.resourceID)
 	path := fmt.Sprintf("%s/%d/complete.json", prefix, fulfillmentID)
 	resource := new(FulfillmentResource)
@@ -131,8 +131,8 @@ func (s *FulfillmentServiceOp) Complete(fulfillmentID int) (*Fulfillment, error)
 	return resource.Fulfillment, err
 }
 
-// Transition an existing fulfillment
-func (s *FulfillmentServiceOp) Transition(fulfillmentID int) (*Fulfillment, error) {
+// Open an existing fulfillment
+func (s *FulfillmentAPIOp) Open(fulfillmentID int) (*Fulfillment, error) {
 	prefix := FulfillmentPathPrefix(s.resource, s.resourceID)
 	path := fmt.Sprintf("%s/%d/open.json", prefix, fulfillmentID)
 	resource := new(FulfillmentResource)
@@ -141,7 +141,7 @@ func (s *FulfillmentServiceOp) Transition(fulfillmentID int) (*Fulfillment, erro
 }
 
 // Cancel an existing fulfillment
-func (s *FulfillmentServiceOp) Cancel(fulfillmentID int) (*Fulfillment, error) {
+func (s *FulfillmentAPIOp) Cancel(fulfillmentID int) (*Fulfillment, error) {
 	prefix := FulfillmentPathPrefix(s.resource, s.resourceID)
 	path := fmt.Sprintf("%s/%d/cancel.json", prefix, fulfillmentID)
 	resource := new(FulfillmentResource)

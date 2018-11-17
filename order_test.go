@@ -450,7 +450,7 @@ func TestOrderCreateFulfillment(t *testing.T) {
 	fulfillment := Fulfillment{
 		LocationID:     905684977,
 		TrackingNumber: "123456789",
-		TrackingUrls: []string{
+		TrackingURLs: []string{
 			"https://shipping.xyz/track.php?num=123456789",
 			"https://anothershipper.corp/track.php?code=abc",
 		},
@@ -499,16 +499,16 @@ func TestOrderCompleteFulfillment(t *testing.T) {
 	FulfillmentTests(t, *returnedFulfillment)
 }
 
-func TestOrderTransitionFulfillment(t *testing.T) {
+func TestOrderOpenFulfillment(t *testing.T) {
 	setup()
 	defer teardown()
 
 	httpmock.RegisterResponder("POST", "https://fooshop.myshopify.com/admin/orders/1/fulfillments/2/open.json",
 		httpmock.NewBytesResponder(200, loadFixture("fulfillment.json")))
 
-	returnedFulfillment, err := client.Order.TransitionFulfillment(1, 2)
+	returnedFulfillment, err := client.Order.OpenFulfillment(1, 2)
 	if err != nil {
-		t.Errorf("Order.TransitionFulfillment() returned error: %v", err)
+		t.Errorf("Order.OpenFulfillment() returned error: %v", err)
 	}
 
 	FulfillmentTests(t, *returnedFulfillment)

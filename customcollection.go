@@ -19,8 +19,8 @@ type CustomCollectionService interface {
 	Update(CustomCollection) (*CustomCollection, error)
 	Delete(int) error
 
-	// MetafieldsService used for CustomCollection resource to communicate with Metafields resource
-	MetafieldsService
+	// MetafieldsAPI used for CustomCollection resource to communicate with Metafields resource
+	MetafieldsAPI
 }
 
 // CustomCollectionServiceOp handles communication with the custom collection
@@ -101,38 +101,38 @@ func (s *CustomCollectionServiceOp) Delete(collectionID int) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", customCollectionsBasePath, collectionID))
 }
 
-// List metafields for a custom collection
+// ListMetafields list metafields for a custom collection
 func (s *CustomCollectionServiceOp) ListMetafields(customCollectionID int, options interface{}) ([]Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
-	return metafieldService.List(options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
+	return metafieldAPI.List(options)
 }
 
-// Count metafields for a custom collection
+// CountMetafields count metafields for a custom collection
 func (s *CustomCollectionServiceOp) CountMetafields(customCollectionID int, options interface{}) (int, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
-	return metafieldService.Count(options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
+	return metafieldAPI.Count(options)
 }
 
-// Get individual metafield for a custom collection
+// GetMetafield get individual metafield for a custom collection
 func (s *CustomCollectionServiceOp) GetMetafield(customCollectionID int, metafieldID int, options interface{}) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
-	return metafieldService.Get(metafieldID, options)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
+	return metafieldAPI.Get(metafieldID, options)
 }
 
-// Create a new metafield for a custom collection
+// CreateMetafield create a new metafield for a custom collection
 func (s *CustomCollectionServiceOp) CreateMetafield(customCollectionID int, metafield Metafield) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
-	return metafieldService.Create(metafield)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
+	return metafieldAPI.Create(metafield)
 }
 
-// Update an existing metafield for a custom collection
+// UpdateMetafield update an existing metafield for a custom collection
 func (s *CustomCollectionServiceOp) UpdateMetafield(customCollectionID int, metafield Metafield) (*Metafield, error) {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
-	return metafieldService.Update(metafield)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
+	return metafieldAPI.Update(metafield)
 }
 
-// // Delete an existing metafield for a custom collection
+// DeleteMetafield delete an existing metafield for a custom collection
 func (s *CustomCollectionServiceOp) DeleteMetafield(customCollectionID int, metafieldID int) error {
-	metafieldService := &MetafieldServiceOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
-	return metafieldService.Delete(metafieldID)
+	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
+	return metafieldAPI.Delete(metafieldID)
 }
