@@ -24,7 +24,7 @@ func ShopShortName(name string) string {
 }
 
 // Return the Shop's base url.
-func ShopBaseUrl(name string) string {
+func ShopBaseURL(name string) string {
 	name = ShopFullName(name)
 	return fmt.Sprintf("https://%s", name)
 }

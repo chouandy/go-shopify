@@ -12,7 +12,7 @@ import (
 	"gopkg.in/jarcoal/httpmock.v1"
 )
 
-func TestAppAuthorizeUrl(t *testing.T) {
+func TestAppAuthorizeURL(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -25,9 +25,9 @@ func TestAppAuthorizeUrl(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := app.AuthorizeUrl(c.shopName, c.nonce)
+		actual := app.AuthorizeURL(c.shopName, c.nonce)
 		if actual != c.expected {
-			t.Errorf("App.AuthorizeUrl(): expected %s, actual %s", c.expected, actual)
+			t.Errorf("App.AuthorizeURL(): expected %s, actual %s", c.expected, actual)
 		}
 	}
 }

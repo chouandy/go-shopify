@@ -46,7 +46,7 @@ func TestShopShortName(t *testing.T) {
 	}
 }
 
-func TestShopBaseUrl(t *testing.T) {
+func TestShopBaseURL(t *testing.T) {
 	cases := []struct {
 		in, expected string
 	}{
@@ -59,9 +59,9 @@ func TestShopBaseUrl(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := ShopBaseUrl(c.in)
+		actual := ShopBaseURL(c.in)
 		if actual != c.expected {
-			t.Errorf("ShopBaseUrl(%s): expected %s, actual %s", c.in, c.expected, actual)
+			t.Errorf("ShopBaseURL(%s): expected %s, actual %s", c.in, c.expected, actual)
 		}
 	}
 }

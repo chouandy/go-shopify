@@ -39,8 +39,8 @@ app := goshopify.App{
 // In some request handler, you probably want something like this:
 func MyHandler(w http.ResponseWriter, r *http.Request) {
     shopName := r.URL.Query().Get("shop")
-    authUrl := app.AuthorizeURL(shopName)
-    http.Redirect(w, r, authUrl, http.StatusFound)
+    authURL := app.AuthorizeURL(shopName)
+    http.Redirect(w, r, authURL, http.StatusFound)
 }
 
 // Fetch a permanent access token in the callback

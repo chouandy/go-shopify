@@ -19,16 +19,16 @@ const shopifyChecksumHeader = "X-Shopify-Hmac-Sha256"
 //
 // State is a unique value that can be used to check the authenticity during a
 // callback from Shopify.
-func (app App) AuthorizeUrl(shopName string, state string) string {
-	shopUrl, _ := url.Parse(ShopBaseUrl(shopName))
-	shopUrl.Path = "/admin/oauth/authorize"
-	query := shopUrl.Query()
+func (app App) AuthorizeURL(shopName string, state string) string {
+	shopURL, _ := url.Parse(ShopBaseURL(shopName))
+	shopURL.Path = "/admin/oauth/authorize"
+	query := shopURL.Query()
 	query.Set("client_id", app.APIKey)
 	query.Set("redirect_uri", app.RedirectURL)
 	query.Set("scope", app.Scope)
 	query.Set("state", state)
-	shopUrl.RawQuery = query.Encode()
-	return shopUrl.String()
+	shopURL.RawQuery = query.Encode()
+	return shopURL.String()
 }
 
 func (app App) GetAccessToken(shopName string, code string) (string, error) {

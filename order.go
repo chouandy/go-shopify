@@ -119,7 +119,7 @@ type Order struct {
 	ProcessingMethod      string           `json:"processing_method,omitempty"`
 	Refunds               []Refund         `json:"refunds,omitempty"`
 	UserID                int              `json:"user_id,omitempty"`
-	OrderStatusUrl        string           `json:"order_status_url,omitempty"`
+	OrderStatusURL        string           `json:"order_status_url,omitempty"`
 	Gateway               string           `json:"gateway,omitempty"`
 	Confirmed             *bool            `json:"confirmed,omitempty"`
 	TotalPriceUSD         *decimal.Decimal `json:"total_price_usd,omitempty"`

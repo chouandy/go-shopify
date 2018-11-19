@@ -297,8 +297,8 @@ func TestDo(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		shopUrl := fmt.Sprintf("https://fooshop.myshopify.com/%v", c.url)
-		httpmock.RegisterResponder("GET", shopUrl, c.responder)
+		shopURL := fmt.Sprintf("https://fooshop.myshopify.com/%v", c.url)
+		httpmock.RegisterResponder("GET", shopURL, c.responder)
 
 		body := new(MyStruct)
 		req, _ := client.NewRequest("GET", c.url, nil, nil)
@@ -373,8 +373,8 @@ func TestCustomHTTPClientDo(t *testing.T) {
 		client.Client = c.client
 		httpmock.ActivateNonDefault(client.Client)
 
-		shopUrl := fmt.Sprintf("https://fooshop.myshopify.com/%v", c.url)
-		httpmock.RegisterResponder("GET", shopUrl, c.responder)
+		shopURL := fmt.Sprintf("https://fooshop.myshopify.com/%v", c.url)
+		httpmock.RegisterResponder("GET", shopURL, c.responder)
 
 		body := new(MyStruct)
 		req, err := client.NewRequest("GET", c.url, nil, nil)

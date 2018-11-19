@@ -181,7 +181,7 @@ func (a App) NewClient(shopName, token string) *Client {
 func NewClient(app App, shopName, token string) *Client {
 	httpClient := http.DefaultClient
 
-	baseURL, _ := url.Parse(ShopBaseUrl(shopName))
+	baseURL, _ := url.Parse(ShopBaseURL(shopName))
 
 	c := &Client{Client: httpClient, app: app, baseURL: baseURL, token: token}
 	c.ApplicationCharge = &ApplicationChargeAPIOp{client: c}
