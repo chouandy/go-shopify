@@ -67,7 +67,7 @@ type Client struct {
 	StorefrontAccessToken      StorefrontAccessTokenAPI
 	Theme                      ThemeAPI
 	Transaction                TransactionAPI
-	UsageCharge                UsageChargeService
+	UsageCharge                UsageChargeAPI
 	Variant                    VariantAPI
 	Webhook                    WebhookAPI
 }
@@ -205,7 +205,7 @@ func NewClient(app App, shopName, token string) *Client {
 	c.StorefrontAccessToken = &StorefrontAccessTokenAPIOp{client: c}
 	c.Theme = &ThemeAPIOp{client: c}
 	c.Transaction = &TransactionAPIOp{client: c}
-	c.UsageCharge = &UsageChargeServiceOp{client: c}
+	c.UsageCharge = &UsageChargeAPIOp{client: c}
 	c.Variant = &VariantAPIOp{client: c}
 	c.Webhook = &WebhookAPIOp{client: c}
 

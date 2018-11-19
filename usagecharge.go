@@ -10,18 +10,18 @@ import (
 
 const usageChargesPath = "usage_charges"
 
-// UsageChargeService is an interface for interacting with the
+// UsageChargeAPI is an interface for interacting with the
 // UsageCharge endpoints of the Shopify API.
 // See https://help.shopify.com/en/api/reference/billing/usagecharge#endpoints
-type UsageChargeService interface {
+type UsageChargeAPI interface {
 	Create(int, UsageCharge) (*UsageCharge, error)
 	Get(int, int, interface{}) (*UsageCharge, error)
 	List(int, interface{}) ([]UsageCharge, error)
 }
 
-// UsageChargeServiceOp handles communication with the
+// UsageChargeAPIOp handles communication with the
 // UsageCharge related methods of the Shopify API.
-type UsageChargeServiceOp struct {
+type UsageChargeAPIOp struct {
 	client *Client
 }
 
@@ -37,6 +37,7 @@ type UsageCharge struct {
 	RiskLevel        *decimal.Decimal `json:"risk_level,omitempty"`
 }
 
+// UnmarshalJSON unmarshal json
 func (r *UsageCharge) UnmarshalJSON(data []byte) error {
 	// This is a workaround for the API returning BillingOn date in the format of "YYYY-MM-DD"
 	// https://help.shopify.com/en/api/reference/billing/usagecharge#endpoints
@@ -70,7 +71,7 @@ type UsageChargesResource struct {
 }
 
 // Create creates new usage charge given a recurring charge. *required fields: price and description
-func (r *UsageChargeServiceOp) Create(chargeID int, usageCharge UsageCharge) (
+func (r *UsageChargeAPIOp) Create(chargeID int, usageCharge UsageCharge) (
 	*UsageCharge, error) {
 
 	path := fmt.Sprintf("%s/%d/%s.json", recurringApplicationChargesBasePath, chargeID, usageChargesPath)
@@ -81,7 +82,7 @@ func (r *UsageChargeServiceOp) Create(chargeID int, usageCharge UsageCharge) (
 }
 
 // Get gets individual usage charge.
-func (r *UsageChargeServiceOp) Get(chargeID int, usageChargeID int, options interface{}) (
+func (r *UsageChargeAPIOp) Get(chargeID int, usageChargeID int, options interface{}) (
 	*UsageCharge, error) {
 
 	path := fmt.Sprintf("%s/%d/%s/%d.json", recurringApplicationChargesBasePath, chargeID, usageChargesPath, usageChargeID)
@@ -91,7 +92,7 @@ func (r *UsageChargeServiceOp) Get(chargeID int, usageChargeID int, options inte
 }
 
 // List gets all usage charges associated with the recurring charge.
-func (r *UsageChargeServiceOp) List(chargeID int, options interface{}) (
+func (r *UsageChargeAPIOp) List(chargeID int, options interface{}) (
 	[]UsageCharge, error) {
 
 	path := fmt.Sprintf("%s/%d/%s.json", recurringApplicationChargesBasePath, chargeID, usageChargesPath)
