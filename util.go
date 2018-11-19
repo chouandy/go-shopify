@@ -25,15 +25,14 @@ func ShopShortName(name string) string {
 
 // ShopBaseURL return the Shop's base url.
 func ShopBaseURL(name string) string {
-	name = ShopFullName(name)
-	return fmt.Sprintf("https://%s", name)
+	return "https://" + ShopFullName(name)
 }
 
 // MetafieldPathPrefix return the prefix for a metafield path
 func MetafieldPathPrefix(resource string, resourceID int) string {
 	var prefix string
-	if resource == "" {
-		prefix = fmt.Sprintf("admin/metafields")
+	if len(resource) == 0 {
+		prefix = "admin/metafields"
 	} else {
 		prefix = fmt.Sprintf("admin/%s/%d/metafields", resource, resourceID)
 	}
@@ -43,8 +42,8 @@ func MetafieldPathPrefix(resource string, resourceID int) string {
 // FulfillmentPathPrefix return the prefix for a fulfillment path
 func FulfillmentPathPrefix(resource string, resourceID int) string {
 	var prefix string
-	if resource == "" {
-		prefix = fmt.Sprintf("admin/fulfillments")
+	if len(resource) == 0 {
+		prefix = "admin/fulfillments"
 	} else {
 		prefix = fmt.Sprintf("admin/%s/%d/fulfillments", resource, resourceID)
 	}
