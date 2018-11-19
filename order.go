@@ -114,11 +114,11 @@ type Order struct {
 	SourceName            string           `json:"source_name,omitempty"`
 	ClientDetails         *ClientDetails   `json:"client_details,omitempty"`
 	Tags                  string           `json:"tags,omitempty"`
-	LocationId            int              `json:"location_id,omitempty"`
+	LocationID            int              `json:"location_id,omitempty"`
 	PaymentGatewayNames   []string         `json:"payment_gateway_names,omitempty"`
 	ProcessingMethod      string           `json:"processing_method,omitempty"`
 	Refunds               []Refund         `json:"refunds,omitempty"`
-	UserId                int              `json:"user_id,omitempty"`
+	UserID                int              `json:"user_id,omitempty"`
 	OrderStatusUrl        string           `json:"order_status_url,omitempty"`
 	Gateway               string           `json:"gateway,omitempty"`
 	Confirmed             *bool            `json:"confirmed,omitempty"`
@@ -265,20 +265,20 @@ type ClientDetails struct {
 }
 
 type Refund struct {
-	Id              int              `json:"id,omitempty"`
-	OrderId         int              `json:"order_id,omitempty"`
+	ID              int              `json:"id,omitempty"`
+	OrderID         int              `json:"order_id,omitempty"`
 	CreatedAt       *time.Time       `json:"created_at,omitempty"`
 	Note            string           `json:"note,omitempty"`
 	Restock         *bool            `json:"restock,omitempty"`
-	UserId          int              `json:"user_id,omitempty"`
+	UserID          int              `json:"user_id,omitempty"`
 	RefundLineItems []RefundLineItem `json:"refund_line_items,omitempty"`
 	Transactions    []Transaction    `json:"transactions,omitempty"`
 }
 
 type RefundLineItem struct {
-	Id         int              `json:"id,omitempty"`
+	ID         int              `json:"id,omitempty"`
 	Quantity   int              `json:"quantity,omitempty"`
-	LineItemId int              `json:"line_item_id,omitempty"`
+	LineItemID int              `json:"line_item_id,omitempty"`
 	LineItem   *LineItem        `json:"line_item,omitempty"`
 	Subtotal   *decimal.Decimal `json:"subtotal,omitempty"`
 	TotalTax   *decimal.Decimal `json:"total_tax,omitempty"`

@@ -34,7 +34,7 @@ func TestProductList(t *testing.T) {
 	}
 }
 
-func TestProductListFilterByIds(t *testing.T) {
+func TestProductListFilterByIDs(t *testing.T) {
 	setup()
 	defer teardown()
 

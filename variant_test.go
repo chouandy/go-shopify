@@ -22,9 +22,9 @@ func variantTests(t *testing.T, variant Variant) {
 		t.Errorf("Variant.Title returned %+v, expected %+v", variant.Title, expectedTitle)
 	}
 
-	expectedInventoryItemId := 1
-	if variant.InventoryItemId != expectedInventoryItemId {
-		t.Errorf("Variant.InventoryItemId returned %+v, expected %+v", variant.InventoryItemId, expectedInventoryItemId)
+	expectedInventoryItemID := 1
+	if variant.InventoryItemID != expectedInventoryItemID {
+		t.Errorf("Variant.InventoryItemID returned %+v, expected %+v", variant.InventoryItemID, expectedInventoryItemID)
 	}
 }
 

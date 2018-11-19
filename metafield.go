@@ -45,7 +45,7 @@ type Metafield struct {
 	ValueType     string      `json:"value_type,omitempty"`
 	Namespace     string      `json:"namespace,omitempty"`
 	Description   string      `json:"description,omitempty"`
-	OwnerId       int         `json:"owner_id,omitempty"`
+	OwnerID       int         `json:"owner_id,omitempty"`
 	CreatedAt     *time.Time  `json:"created_at,omitempty"`
 	UpdatedAt     *time.Time  `json:"updated_at,omitempty"`
 	OwnerResource string      `json:"owner_resource,omitempty"`

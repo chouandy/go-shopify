@@ -65,8 +65,8 @@ func (s *BlogAPIOp) Count(options interface{}) (int, error) {
 }
 
 // Get single blog
-func (s *BlogAPIOp) Get(blogId int, options interface{}) (*Blog, error) {
-	path := fmt.Sprintf("%s/%d.json", blogsBasePath, blogId)
+func (s *BlogAPIOp) Get(blogID int, options interface{}) (*Blog, error) {
+	path := fmt.Sprintf("%s/%d.json", blogsBasePath, blogID)
 	resource := new(BlogResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Blog, err
@@ -91,6 +91,6 @@ func (s *BlogAPIOp) Update(blog Blog) (*Blog, error) {
 }
 
 // Delete an blog
-func (s *BlogAPIOp) Delete(blogId int) error {
-	return s.client.Delete(fmt.Sprintf("%s/%d.json", blogsBasePath, blogId))
+func (s *BlogAPIOp) Delete(blogID int) error {
+	return s.client.Delete(fmt.Sprintf("%s/%d.json", blogsBasePath, blogID))
 }
