@@ -60,7 +60,7 @@ type Shop struct {
 	CheckoutAPISupported    bool       `json:"checkout_api_supported"`
 }
 
-// Represents the result from the admin/shop.json endpoint
+// ShopResource represents the result from the admin/shop.json endpoint
 type ShopResource struct {
 	Shop *Shop `json:"shop"`
 }

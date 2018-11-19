@@ -35,7 +35,7 @@ type ScriptTag struct {
 	UpdatedAt    *time.Time `json:"updated_at"`
 }
 
-// The options provided by Shopify.
+// ScriptTagOption the options provided by Shopify.
 type ScriptTagOption struct {
 	Limit        int       `url:"limit,omitempty"`
 	Page         int       `url:"page,omitempty"`

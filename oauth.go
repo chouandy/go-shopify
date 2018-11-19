@@ -15,7 +15,7 @@ import (
 
 const shopifyChecksumHeader = "X-Shopify-Hmac-Sha256"
 
-// Returns a Shopify oauth authorization url for the given shopname and state.
+// AuthorizeURL returns a Shopify oauth authorization url for the given shopname and state.
 //
 // State is a unique value that can be used to check the authenticity during a
 // callback from Shopify.
@@ -31,6 +31,7 @@ func (app App) AuthorizeURL(shopName string, state string) string {
 	return shopURL.String()
 }
 
+// GetAccessToken get access token
 func (app App) GetAccessToken(shopName string, code string) (string, error) {
 	type Token struct {
 		Token string `json:"access_token"`
@@ -54,7 +55,7 @@ func (app App) GetAccessToken(shopName string, code string) (string, error) {
 	return token.Token, err
 }
 
-// Verify a message against a message HMAC
+// VerifyMessage verify a message against a message HMAC
 func (app App) VerifyMessage(message, messageMAC string) bool {
 	mac := hmac.New(sha256.New, []byte(app.APISecret))
 	mac.Write([]byte(message))
@@ -66,7 +67,7 @@ func (app App) VerifyMessage(message, messageMAC string) bool {
 	return hmac.Equal(actualMac, expectedMAC)
 }
 
-// Verifying URL callback parameters.
+// VerifyAuthorizationURL verifying URL callback parameters.
 func (app App) VerifyAuthorizationURL(u *url.URL) (bool, error) {
 	q := u.Query()
 	messageMAC := q.Get("hmac")
@@ -80,7 +81,7 @@ func (app App) VerifyAuthorizationURL(u *url.URL) (bool, error) {
 	return app.VerifyMessage(message, messageMAC), err
 }
 
-// Verifies a webhook http request, sent by Shopify.
+// VerifyWebhookRequest verifies a webhook http request, sent by Shopify.
 // The body of the request is still readable after invoking the method.
 func (app App) VerifyWebhookRequest(httpRequest *http.Request) bool {
 	shopifySha256 := httpRequest.Header.Get(shopifyChecksumHeader)
@@ -96,7 +97,7 @@ func (app App) VerifyWebhookRequest(httpRequest *http.Request) bool {
 	return hmac.Equal(actualMac, expectedMac)
 }
 
-// Verifies a webhook http request, sent by Shopify.
+// VerifyWebhookRequestVerbose verifies a webhook http request, sent by Shopify.
 // The body of the request is still readable after invoking the method.
 // This method has more verbose error output which is useful for debugging.
 func (app App) VerifyWebhookRequestVerbose(httpRequest *http.Request) (bool, error) {

@@ -33,7 +33,7 @@ type OrderAPIOp struct {
 	client *Client
 }
 
-// A struct for all available order count options
+// OrderCountOptions a struct for all available order count options
 type OrderCountOptions struct {
 	Page              int       `url:"page,omitempty"`
 	Limit             int       `url:"limit,omitempty"`
@@ -49,7 +49,7 @@ type OrderCountOptions struct {
 	FulfillmentStatus string    `url:"fulfillment_status,omitempty"`
 }
 
-// A struct for all available order list options.
+// OrderListOptions a struct for all available order list options.
 // See: https://help.shopify.com/api/reference/order#index
 type OrderListOptions struct {
 	Page              int       `url:"page,omitempty"`
@@ -135,6 +135,7 @@ type Order struct {
 	Metafields            []Metafield      `json:"metafields,omitempty"`
 }
 
+// Address address struct
 type Address struct {
 	ID           int     `json:"id,omitempty"`
 	Address1     string  `json:"address1,omitempty"`
@@ -154,12 +155,14 @@ type Address struct {
 	Zip          string  `json:"zip,omitempty"`
 }
 
+// DiscountCode discount code struct
 type DiscountCode struct {
 	Amount *decimal.Decimal `json:"amount,omitempty"`
 	Code   string           `json:"code,omitempty"`
 	Type   string           `json:"type,omitempty"`
 }
 
+// LineItem line item struct
 type LineItem struct {
 	ID                         int              `json:"id,omitempty"`
 	ProductID                  int              `json:"product_id,omitempty"`
@@ -188,25 +191,28 @@ type LineItem struct {
 	DestinationLocation        *Address         `json:"destination_location,omitempty"`
 }
 
+// LineItemProperty line item property struct
 type LineItemProperty struct {
 	Message string `json:"message"`
 }
 
+// NoteAttribute note attribute struct
 type NoteAttribute struct {
 	Name  string      `json:"name,omitempty"`
 	Value interface{} `json:"value,omitempty"`
 }
 
-// Represents the result from the orders/X.json endpoint
+// OrderResource represents the result from the orders/X.json endpoint
 type OrderResource struct {
 	Order *Order `json:"order"`
 }
 
-// Represents the result from the orders.json endpoint
+// OrdersResource represents the result from the orders.json endpoint
 type OrdersResource struct {
 	Orders []Order `json:"orders"`
 }
 
+// PaymentDetails payment details struct
 type PaymentDetails struct {
 	AVSResultCode     string `json:"avs_result_code,omitempty"`
 	CreditCardBin     string `json:"credit_card_bin,omitempty"`
@@ -215,6 +221,7 @@ type PaymentDetails struct {
 	CreditCardCompany string `json:"credit_card_company,omitempty"`
 }
 
+// ShippingLine shipping line struct
 type ShippingLine struct {
 	ID                            int              `json:"id,omitempty"`
 	Title                         string           `json:"title,omitempty"`
@@ -228,12 +235,14 @@ type ShippingLine struct {
 	TaxLines                      []TaxLine        `json:"tax_lines,omitempty"`
 }
 
+// TaxLine tax line struct
 type TaxLine struct {
 	Title string           `json:"title,omitempty"`
 	Price *decimal.Decimal `json:"price,omitempty"`
 	Rate  *decimal.Decimal `json:"rate,omitempty"`
 }
 
+// Transaction transaction struct
 type Transaction struct {
 	ID             int              `json:"id,omitempty"`
 	OrderID        int              `json:"order_id,omitempty"`
@@ -255,6 +264,7 @@ type Transaction struct {
 	PaymentDetails *PaymentDetails  `json:"payment_details,omitempty"`
 }
 
+// ClientDetails client details struct
 type ClientDetails struct {
 	AcceptLanguage string `json:"accept_language,omitempty"`
 	BrowserHeight  int    `json:"browser_height,omitempty"`
@@ -264,6 +274,7 @@ type ClientDetails struct {
 	UserAgent      string `json:"user_agent,omitempty"`
 }
 
+// Refund refund struct
 type Refund struct {
 	ID              int              `json:"id,omitempty"`
 	OrderID         int              `json:"order_id,omitempty"`
@@ -275,6 +286,7 @@ type Refund struct {
 	Transactions    []Transaction    `json:"transactions,omitempty"`
 }
 
+// RefundLineItem refund line item
 type RefundLineItem struct {
 	ID         int              `json:"id,omitempty"`
 	Quantity   int              `json:"quantity,omitempty"`

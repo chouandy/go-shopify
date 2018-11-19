@@ -45,7 +45,7 @@ type BlogsResource struct {
 	Blogs []Blog `json:"blogs"`
 }
 
-// Represents the result from the blogs/X.json endpoint
+// BlogResource represents the result from the blogs/X.json endpoint
 type BlogResource struct {
 	Blog *Blog `json:"blog"`
 }

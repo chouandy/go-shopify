@@ -143,7 +143,7 @@ func TestOrderGetWithTransactions(t *testing.T) {
 		httpmock.NewBytesResponder(200, loadFixture("order_with_transaction.json")))
 
 	options := struct {
-		ApiFeatures string `url:"_apiFeatures"`
+		APIFeatures string `url:"_apiFeatures"`
 	}{"include-transactions"}
 
 	order, err := client.Order.Get(123456, options)

@@ -72,6 +72,7 @@ func parse(dest **time.Time, data *string) error {
 	return nil
 }
 
+// UnmarshalJSON unmarshal json
 func (r *RecurringApplicationCharge) UnmarshalJSON(data []byte) error {
 	// This is a workaround for the API returning incomplete results:
 	// https://ecommerce.shopify.com/c/shopify-apis-and-technology/t/-523203

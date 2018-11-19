@@ -42,12 +42,12 @@ type CustomerAddress struct {
 	Default      bool   `json:"default,omitempty"`
 }
 
-// CustomerAddressResoruce represents the result from the addresses/X.json endpoint
+// CustomerAddressResource represents the result from the addresses/X.json endpoint
 type CustomerAddressResource struct {
 	Address *CustomerAddress `json:"customer_address"`
 }
 
-// CustomerAddressResoruce represents the result from the customers/X/addresses.json endpoint
+// CustomerAddressesResource represents the result from the customers/X/addresses.json endpoint
 type CustomerAddressesResource struct {
 	Addresses []CustomerAddress `json:"addresses"`
 }
@@ -77,7 +77,7 @@ func (s *CustomerAddressAPIOp) Create(customerID int, address CustomerAddress) (
 	return resource.Address, err
 }
 
-// Create a new address for given customer
+// Update a address for given customer
 func (s *CustomerAddressAPIOp) Update(customerID int, address CustomerAddress) (*CustomerAddress, error) {
 	path := fmt.Sprintf("%s/%d/addresses/%d.json", customersBasePath, customerID, address.ID)
 	wrappedData := CustomerAddressResource{Address: &address}

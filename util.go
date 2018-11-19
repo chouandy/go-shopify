@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// Return the full shop name, including .myshopify.com
+// ShopFullName return the full shop name, including .myshopify.com
 func ShopFullName(name string) string {
 	name = strings.TrimSpace(name)
 	name = strings.Trim(name, ".")
@@ -15,7 +15,7 @@ func ShopFullName(name string) string {
 	return name + ".myshopify.com"
 }
 
-// Return the short shop name, excluding .myshopify.com
+// ShopShortName return the short shop name, excluding .myshopify.com
 func ShopShortName(name string) string {
 	// Convert to fullname and remove the myshopify part. Perhaps not the most
 	// performant solution, but then we don't have to repeat all the trims here
@@ -23,13 +23,13 @@ func ShopShortName(name string) string {
 	return strings.Replace(ShopFullName(name), ".myshopify.com", "", -1)
 }
 
-// Return the Shop's base url.
+// ShopBaseURL return the Shop's base url.
 func ShopBaseURL(name string) string {
 	name = ShopFullName(name)
 	return fmt.Sprintf("https://%s", name)
 }
 
-// Return the prefix for a metafield path
+// MetafieldPathPrefix return the prefix for a metafield path
 func MetafieldPathPrefix(resource string, resourceID int) string {
 	var prefix string
 	if resource == "" {
@@ -40,7 +40,7 @@ func MetafieldPathPrefix(resource string, resourceID int) string {
 	return prefix
 }
 
-// Return the prefix for a fulfillment path
+// FulfillmentPathPrefix return the prefix for a fulfillment path
 func FulfillmentPathPrefix(resource string, resourceID int) string {
 	var prefix string
 	if resource == "" {

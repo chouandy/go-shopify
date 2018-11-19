@@ -29,6 +29,7 @@ type SmartCollectionAPIOp struct {
 	client *Client
 }
 
+// Rule rule struct
 type Rule struct {
 	Column    string `json:"column"`
 	Relation  string `json:"relation"`
