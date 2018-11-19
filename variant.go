@@ -46,14 +46,14 @@ type Variant struct {
 	Option3              string           `json:"option3,omitempty"`
 	CreatedAt            *time.Time       `json:"created_at,omitempty"`
 	UpdatedAt            *time.Time       `json:"updated_at,omitempty"`
-	Taxable              bool             `json:"taxable,omitempty"`
+	Taxable              *bool            `json:"taxable,omitempty"`
 	Barcode              string           `json:"barcode,omitempty"`
 	ImageID              int              `json:"image_id,omitempty"`
 	InventoryQuantity    int              `json:"inventory_quantity,omitempty"`
 	Weight               *decimal.Decimal `json:"weight,omitempty"`
 	WeightUnit           string           `json:"weight_unit,omitempty"`
 	OldInventoryQuantity int              `json:"old_inventory_quantity,omitempty"`
-	RequireShipping      bool             `json:"requires_shipping,omitempty"`
+	RequiresShipping     *bool            `json:"requires_shipping,omitempty"`
 	AdminGraphqlAPIID    string           `json:"admin_graphql_api_id,omitempty"`
 }
 
