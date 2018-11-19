@@ -10,10 +10,10 @@ import (
 const customersBasePath = "admin/customers"
 const customersResourceName = "customers"
 
-// CustomerService is an interface for interfacing with the customers endpoints
+// CustomerAPI is an interface for interfacing with the customers endpoints
 // of the Shopify API.
 // See: https://help.shopify.com/api/reference/customer
-type CustomerService interface {
+type CustomerAPI interface {
 	List(interface{}) ([]Customer, error)
 	Count(interface{}) (int, error)
 	Get(int, interface{}) (*Customer, error)
@@ -27,9 +27,9 @@ type CustomerService interface {
 	MetafieldsAPI
 }
 
-// CustomerServiceOp handles communication with the product related methods of
+// CustomerAPIOp handles communication with the product related methods of
 // the Shopify API.
-type CustomerServiceOp struct {
+type CustomerAPIOp struct {
 	client *Client
 }
 
@@ -78,7 +78,7 @@ type CustomerSearchOptions struct {
 }
 
 // List customers
-func (s *CustomerServiceOp) List(options interface{}) ([]Customer, error) {
+func (s *CustomerAPIOp) List(options interface{}) ([]Customer, error) {
 	path := fmt.Sprintf("%s.json", customersBasePath)
 	resource := new(CustomersResource)
 	err := s.client.Get(path, resource, options)
@@ -86,13 +86,13 @@ func (s *CustomerServiceOp) List(options interface{}) ([]Customer, error) {
 }
 
 // Count customers
-func (s *CustomerServiceOp) Count(options interface{}) (int, error) {
+func (s *CustomerAPIOp) Count(options interface{}) (int, error) {
 	path := fmt.Sprintf("%s/count.json", customersBasePath)
 	return s.client.Count(path, options)
 }
 
 // Get customer
-func (s *CustomerServiceOp) Get(customerID int, options interface{}) (*Customer, error) {
+func (s *CustomerAPIOp) Get(customerID int, options interface{}) (*Customer, error) {
 	path := fmt.Sprintf("%s/%v.json", customersBasePath, customerID)
 	resource := new(CustomerResource)
 	err := s.client.Get(path, resource, options)
@@ -100,7 +100,7 @@ func (s *CustomerServiceOp) Get(customerID int, options interface{}) (*Customer,
 }
 
 // Create a new customer
-func (s *CustomerServiceOp) Create(customer Customer) (*Customer, error) {
+func (s *CustomerAPIOp) Create(customer Customer) (*Customer, error) {
 	path := fmt.Sprintf("%s.json", customersBasePath)
 	wrappedData := CustomerResource{Customer: &customer}
 	resource := new(CustomerResource)
@@ -109,7 +109,7 @@ func (s *CustomerServiceOp) Create(customer Customer) (*Customer, error) {
 }
 
 // Update an existing customer
-func (s *CustomerServiceOp) Update(customer Customer) (*Customer, error) {
+func (s *CustomerAPIOp) Update(customer Customer) (*Customer, error) {
 	path := fmt.Sprintf("%s/%d.json", customersBasePath, customer.ID)
 	wrappedData := CustomerResource{Customer: &customer}
 	resource := new(CustomerResource)
@@ -118,13 +118,13 @@ func (s *CustomerServiceOp) Update(customer Customer) (*Customer, error) {
 }
 
 // Delete an existing customer
-func (s *CustomerServiceOp) Delete(customerID int) error {
+func (s *CustomerAPIOp) Delete(customerID int) error {
 	path := fmt.Sprintf("%s/%d.json", customersBasePath, customerID)
 	return s.client.Delete(path)
 }
 
 // Search customers
-func (s *CustomerServiceOp) Search(options interface{}) ([]Customer, error) {
+func (s *CustomerAPIOp) Search(options interface{}) ([]Customer, error) {
 	path := fmt.Sprintf("%s/search.json", customersBasePath)
 	resource := new(CustomersResource)
 	err := s.client.Get(path, resource, options)
@@ -132,43 +132,43 @@ func (s *CustomerServiceOp) Search(options interface{}) ([]Customer, error) {
 }
 
 // ListMetafields list metafields for a customer
-func (s *CustomerServiceOp) ListMetafields(customerID int, options interface{}) ([]Metafield, error) {
+func (s *CustomerAPIOp) ListMetafields(customerID int, options interface{}) ([]Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
 	return metafieldAPI.List(options)
 }
 
 // CountMetafields count metafields for a customer
-func (s *CustomerServiceOp) CountMetafields(customerID int, options interface{}) (int, error) {
+func (s *CustomerAPIOp) CountMetafields(customerID int, options interface{}) (int, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
 	return metafieldAPI.Count(options)
 }
 
 // GetMetafield get individual metafield for a customer
-func (s *CustomerServiceOp) GetMetafield(customerID int, metafieldID int, options interface{}) (*Metafield, error) {
+func (s *CustomerAPIOp) GetMetafield(customerID int, metafieldID int, options interface{}) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
 	return metafieldAPI.Get(metafieldID, options)
 }
 
 // CreateMetafield create a new metafield for a customer
-func (s *CustomerServiceOp) CreateMetafield(customerID int, metafield Metafield) (*Metafield, error) {
+func (s *CustomerAPIOp) CreateMetafield(customerID int, metafield Metafield) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
 	return metafieldAPI.Create(metafield)
 }
 
 // UpdateMetafield update an existing metafield for a customer
-func (s *CustomerServiceOp) UpdateMetafield(customerID int, metafield Metafield) (*Metafield, error) {
+func (s *CustomerAPIOp) UpdateMetafield(customerID int, metafield Metafield) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
 	return metafieldAPI.Update(metafield)
 }
 
 // DeleteMetafield delete an existing metafield for a customer
-func (s *CustomerServiceOp) DeleteMetafield(customerID int, metafieldID int) error {
+func (s *CustomerAPIOp) DeleteMetafield(customerID int, metafieldID int) error {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customersResourceName, resourceID: customerID}
 	return metafieldAPI.Delete(metafieldID)
 }
 
 // ListOrders retrieves all orders from a customer
-func (s *CustomerServiceOp) ListOrders(customerID int, options interface{}) ([]Order, error) {
+func (s *CustomerAPIOp) ListOrders(customerID int, options interface{}) ([]Order, error) {
 	path := fmt.Sprintf("%s/%d/orders.json", customersBasePath, customerID)
 	resource := new(OrdersResource)
 	err := s.client.Get(path, resource, options)

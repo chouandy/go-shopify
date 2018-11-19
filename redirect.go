@@ -6,10 +6,10 @@ import (
 
 const redirectsBasePath = "admin/redirects"
 
-// RedirectService is an interface for interacting with the redirects
+// RedirectAPI is an interface for interacting with the redirects
 // endpoints of the Shopify API.
 // See https://help.shopify.com/api/reference/online_store/redirect
-type RedirectService interface {
+type RedirectAPI interface {
 	List(interface{}) ([]Redirect, error)
 	Count(interface{}) (int, error)
 	Get(int, interface{}) (*Redirect, error)
@@ -18,9 +18,9 @@ type RedirectService interface {
 	Delete(int) error
 }
 
-// RedirectServiceOp handles communication with the redirect related methods of the
+// RedirectAPIOp handles communication with the redirect related methods of the
 // Shopify API.
-type RedirectServiceOp struct {
+type RedirectAPIOp struct {
 	client *Client
 }
 
@@ -42,7 +42,7 @@ type RedirectsResource struct {
 }
 
 // List redirects
-func (s *RedirectServiceOp) List(options interface{}) ([]Redirect, error) {
+func (s *RedirectAPIOp) List(options interface{}) ([]Redirect, error) {
 	path := fmt.Sprintf("%s.json", redirectsBasePath)
 	resource := new(RedirectsResource)
 	err := s.client.Get(path, resource, options)
@@ -50,13 +50,13 @@ func (s *RedirectServiceOp) List(options interface{}) ([]Redirect, error) {
 }
 
 // Count redirects
-func (s *RedirectServiceOp) Count(options interface{}) (int, error) {
+func (s *RedirectAPIOp) Count(options interface{}) (int, error) {
 	path := fmt.Sprintf("%s/count.json", redirectsBasePath)
 	return s.client.Count(path, options)
 }
 
 // Get individual redirect
-func (s *RedirectServiceOp) Get(redirectID int, options interface{}) (*Redirect, error) {
+func (s *RedirectAPIOp) Get(redirectID int, options interface{}) (*Redirect, error) {
 	path := fmt.Sprintf("%s/%d.json", redirectsBasePath, redirectID)
 	resource := new(RedirectResource)
 	err := s.client.Get(path, resource, options)
@@ -64,7 +64,7 @@ func (s *RedirectServiceOp) Get(redirectID int, options interface{}) (*Redirect,
 }
 
 // Create a new redirect
-func (s *RedirectServiceOp) Create(redirect Redirect) (*Redirect, error) {
+func (s *RedirectAPIOp) Create(redirect Redirect) (*Redirect, error) {
 	path := fmt.Sprintf("%s.json", redirectsBasePath)
 	wrappedData := RedirectResource{Redirect: &redirect}
 	resource := new(RedirectResource)
@@ -73,7 +73,7 @@ func (s *RedirectServiceOp) Create(redirect Redirect) (*Redirect, error) {
 }
 
 // Update an existing redirect
-func (s *RedirectServiceOp) Update(redirect Redirect) (*Redirect, error) {
+func (s *RedirectAPIOp) Update(redirect Redirect) (*Redirect, error) {
 	path := fmt.Sprintf("%s/%d.json", redirectsBasePath, redirect.ID)
 	wrappedData := RedirectResource{Redirect: &redirect}
 	resource := new(RedirectResource)
@@ -82,6 +82,6 @@ func (s *RedirectServiceOp) Update(redirect Redirect) (*Redirect, error) {
 }
 
 // Delete an existing redirect.
-func (s *RedirectServiceOp) Delete(redirectID int) error {
+func (s *RedirectAPIOp) Delete(redirectID int) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", redirectsBasePath, redirectID))
 }

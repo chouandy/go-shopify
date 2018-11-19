@@ -7,18 +7,18 @@ import (
 
 const storefrontAccessTokensBasePath = "admin/storefront_access_tokens"
 
-// StorefrontAccessTokenService is an interface for interfacing with the storefront access
+// StorefrontAccessTokenAPI is an interface for interfacing with the storefront access
 // token endpoints of the Shopify API.
 // See: https://help.shopify.com/api/reference/access/storefrontaccesstoken
-type StorefrontAccessTokenService interface {
+type StorefrontAccessTokenAPI interface {
 	List(interface{}) ([]StorefrontAccessToken, error)
 	Create(StorefrontAccessToken) (*StorefrontAccessToken, error)
 	Delete(int) error
 }
 
-// StorefrontAccessTokenServiceOp handles communication with the storefront access token
+// StorefrontAccessTokenAPIOp handles communication with the storefront access token
 // related methods of the Shopify API.
-type StorefrontAccessTokenServiceOp struct {
+type StorefrontAccessTokenAPIOp struct {
 	client *Client
 }
 
@@ -43,7 +43,7 @@ type StorefrontAccessTokensResource struct {
 }
 
 // List storefront access tokens
-func (s *StorefrontAccessTokenServiceOp) List(options interface{}) ([]StorefrontAccessToken, error) {
+func (s *StorefrontAccessTokenAPIOp) List(options interface{}) ([]StorefrontAccessToken, error) {
 	path := fmt.Sprintf("%s.json", storefrontAccessTokensBasePath)
 	resource := new(StorefrontAccessTokensResource)
 	err := s.client.Get(path, resource, options)
@@ -51,7 +51,7 @@ func (s *StorefrontAccessTokenServiceOp) List(options interface{}) ([]Storefront
 }
 
 // Create a new storefront access token
-func (s *StorefrontAccessTokenServiceOp) Create(storefrontAccessToken StorefrontAccessToken) (*StorefrontAccessToken, error) {
+func (s *StorefrontAccessTokenAPIOp) Create(storefrontAccessToken StorefrontAccessToken) (*StorefrontAccessToken, error) {
 	path := fmt.Sprintf("%s.json", storefrontAccessTokensBasePath)
 	wrappedData := StorefrontAccessTokenResource{StorefrontAccessToken: &storefrontAccessToken}
 	resource := new(StorefrontAccessTokenResource)
@@ -60,6 +60,6 @@ func (s *StorefrontAccessTokenServiceOp) Create(storefrontAccessToken Storefront
 }
 
 // Delete an existing storefront access token
-func (s *StorefrontAccessTokenServiceOp) Delete(ID int) error {
+func (s *StorefrontAccessTokenAPIOp) Delete(ID int) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", storefrontAccessTokensBasePath, ID))
 }

@@ -2,16 +2,16 @@ package goshopify
 
 import "time"
 
-// ShopService is an interface for interfacing with the shop endpoint of the
+// ShopAPI is an interface for interfacing with the shop endpoint of the
 // Shopify API.
 // See: https://help.shopify.com/api/reference/shop
-type ShopService interface {
+type ShopAPI interface {
 	Get(options interface{}) (*Shop, error)
 }
 
-// ShopServiceOp handles communication with the shop related methods of the
+// ShopAPIOp handles communication with the shop related methods of the
 // Shopify API.
-type ShopServiceOp struct {
+type ShopAPIOp struct {
 	client *Client
 }
 
@@ -66,7 +66,7 @@ type ShopResource struct {
 }
 
 // Get shop
-func (s *ShopServiceOp) Get(options interface{}) (*Shop, error) {
+func (s *ShopAPIOp) Get(options interface{}) (*Shop, error) {
 	resource := new(ShopResource)
 	err := s.client.Get("admin/shop.json", resource, options)
 	return resource.Shop, err

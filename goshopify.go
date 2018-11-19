@@ -48,27 +48,27 @@ type Client struct {
 
 	// Services used for communicating with the API
 	ApplicationCharge          ApplicationChargeAPI
-	Asset                      AssetService
-	Blog                       BlogService
-	CustomCollection           CustomCollectionService
-	Customer                   CustomerService
-	CustomerAddress            CustomerAddressService
+	Asset                      AssetAPI
+	Blog                       BlogAPI
+	CustomCollection           CustomCollectionAPI
+	Customer                   CustomerAPI
+	CustomerAddress            CustomerAddressAPI
 	FulfillmentService         FulfillmentServiceAPI
-	Image                      ImageService
+	Image                      ImageAPI
 	Metafield                  MetafieldAPI
 	Order                      OrderAPI
-	Page                       PageService
-	Product                    ProductService
-	RecurringApplicationCharge RecurringApplicationChargeService
-	Redirect                   RedirectService
-	ScriptTag                  ScriptTagService
-	Shop                       ShopService
-	SmartCollection            SmartCollectionService
-	StorefrontAccessToken      StorefrontAccessTokenService
-	Theme                      ThemeService
-	Transaction                TransactionService
-	Variant                    VariantService
-	Webhook                    WebhookService
+	Page                       PageAPI
+	Product                    ProductAPI
+	RecurringApplicationCharge RecurringApplicationChargeAPI
+	Redirect                   RedirectAPI
+	ScriptTag                  ScriptTagAPI
+	Shop                       ShopAPI
+	SmartCollection            SmartCollectionAPI
+	StorefrontAccessToken      StorefrontAccessTokenAPI
+	Theme                      ThemeAPI
+	Transaction                TransactionAPI
+	Variant                    VariantAPI
+	Webhook                    WebhookAPI
 }
 
 // ResponseError a general response error that follows a similar layout to Shopify's response
@@ -185,27 +185,27 @@ func NewClient(app App, shopName, token string) *Client {
 
 	c := &Client{Client: httpClient, app: app, baseURL: baseURL, token: token}
 	c.ApplicationCharge = &ApplicationChargeAPIOp{client: c}
-	c.Asset = &AssetServiceOp{client: c}
-	c.Blog = &BlogServiceOp{client: c}
-	c.CustomCollection = &CustomCollectionServiceOp{client: c}
-	c.Customer = &CustomerServiceOp{client: c}
-	c.CustomerAddress = &CustomerAddressServiceOp{client: c}
-	c.Image = &ImageServiceOp{client: c}
-	c.Metafield = &MetafieldAPIOp{client: c}
+	c.Asset = &AssetAPIOp{client: c}
+	c.Blog = &BlogAPIOp{client: c}
+	c.CustomCollection = &CustomCollectionAPIOp{client: c}
+	c.Customer = &CustomerAPIOp{client: c}
+	c.CustomerAddress = &CustomerAddressAPIOp{client: c}
 	c.FulfillmentService = &FulfillmentServiceAPIOp{client: c}
+	c.Image = &ImageAPIOp{client: c}
+	c.Metafield = &MetafieldAPIOp{client: c}
 	c.Order = &OrderAPIOp{client: c}
-	c.Page = &PageServiceOp{client: c}
-	c.Product = &ProductServiceOp{client: c}
-	c.RecurringApplicationCharge = &RecurringApplicationChargeServiceOp{client: c}
-	c.Redirect = &RedirectServiceOp{client: c}
-	c.ScriptTag = &ScriptTagServiceOp{client: c}
-	c.Shop = &ShopServiceOp{client: c}
-	c.SmartCollection = &SmartCollectionServiceOp{client: c}
-	c.StorefrontAccessToken = &StorefrontAccessTokenServiceOp{client: c}
-	c.Theme = &ThemeServiceOp{client: c}
-	c.Transaction = &TransactionServiceOp{client: c}
-	c.Variant = &VariantServiceOp{client: c}
-	c.Webhook = &WebhookServiceOp{client: c}
+	c.Page = &PageAPIOp{client: c}
+	c.Product = &ProductAPIOp{client: c}
+	c.RecurringApplicationCharge = &RecurringApplicationChargeAPIOp{client: c}
+	c.Redirect = &RedirectAPIOp{client: c}
+	c.ScriptTag = &ScriptTagAPIOp{client: c}
+	c.Shop = &ShopAPIOp{client: c}
+	c.SmartCollection = &SmartCollectionAPIOp{client: c}
+	c.StorefrontAccessToken = &StorefrontAccessTokenAPIOp{client: c}
+	c.Theme = &ThemeAPIOp{client: c}
+	c.Transaction = &TransactionAPIOp{client: c}
+	c.Variant = &VariantAPIOp{client: c}
+	c.Webhook = &WebhookAPIOp{client: c}
 
 	return c
 }

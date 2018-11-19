@@ -8,10 +8,10 @@ import (
 const productsBasePath = "admin/products"
 const productsResourceName = "products"
 
-// ProductService is an interface for interfacing with the product endpoints
+// ProductAPI is an interface for interfacing with the product endpoints
 // of the Shopify API.
 // See: https://help.shopify.com/api/reference/product
-type ProductService interface {
+type ProductAPI interface {
 	List(interface{}) ([]Product, error)
 	Count(interface{}) (int, error)
 	Get(int, interface{}) (*Product, error)
@@ -23,9 +23,9 @@ type ProductService interface {
 	MetafieldsAPI
 }
 
-// ProductServiceOp handles communication with the product related methods of
+// ProductAPIOp handles communication with the product related methods of
 // the Shopify API.
-type ProductServiceOp struct {
+type ProductAPIOp struct {
 	client *Client
 }
 
@@ -73,7 +73,7 @@ type ProductsResource struct {
 }
 
 // List products
-func (s *ProductServiceOp) List(options interface{}) ([]Product, error) {
+func (s *ProductAPIOp) List(options interface{}) ([]Product, error) {
 	path := fmt.Sprintf("%s.json", productsBasePath)
 	resource := new(ProductsResource)
 	err := s.client.Get(path, resource, options)
@@ -81,13 +81,13 @@ func (s *ProductServiceOp) List(options interface{}) ([]Product, error) {
 }
 
 // Count products
-func (s *ProductServiceOp) Count(options interface{}) (int, error) {
+func (s *ProductAPIOp) Count(options interface{}) (int, error) {
 	path := fmt.Sprintf("%s/count.json", productsBasePath)
 	return s.client.Count(path, options)
 }
 
 // Get individual product
-func (s *ProductServiceOp) Get(productID int, options interface{}) (*Product, error) {
+func (s *ProductAPIOp) Get(productID int, options interface{}) (*Product, error) {
 	path := fmt.Sprintf("%s/%d.json", productsBasePath, productID)
 	resource := new(ProductResource)
 	err := s.client.Get(path, resource, options)
@@ -95,7 +95,7 @@ func (s *ProductServiceOp) Get(productID int, options interface{}) (*Product, er
 }
 
 // Create a new product
-func (s *ProductServiceOp) Create(product Product) (*Product, error) {
+func (s *ProductAPIOp) Create(product Product) (*Product, error) {
 	path := fmt.Sprintf("%s.json", productsBasePath)
 	wrappedData := ProductResource{Product: &product}
 	resource := new(ProductResource)
@@ -104,7 +104,7 @@ func (s *ProductServiceOp) Create(product Product) (*Product, error) {
 }
 
 // Update an existing product
-func (s *ProductServiceOp) Update(product Product) (*Product, error) {
+func (s *ProductAPIOp) Update(product Product) (*Product, error) {
 	path := fmt.Sprintf("%s/%d.json", productsBasePath, product.ID)
 	wrappedData := ProductResource{Product: &product}
 	resource := new(ProductResource)
@@ -113,42 +113,42 @@ func (s *ProductServiceOp) Update(product Product) (*Product, error) {
 }
 
 // Delete an existing product
-func (s *ProductServiceOp) Delete(productID int) error {
+func (s *ProductAPIOp) Delete(productID int) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", productsBasePath, productID))
 }
 
 // ListMetafields list metafields for a product
-func (s *ProductServiceOp) ListMetafields(productID int, options interface{}) ([]Metafield, error) {
+func (s *ProductAPIOp) ListMetafields(productID int, options interface{}) ([]Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: productsResourceName, resourceID: productID}
 	return metafieldAPI.List(options)
 }
 
 // CountMetafields count metafields for a product
-func (s *ProductServiceOp) CountMetafields(productID int, options interface{}) (int, error) {
+func (s *ProductAPIOp) CountMetafields(productID int, options interface{}) (int, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: productsResourceName, resourceID: productID}
 	return metafieldAPI.Count(options)
 }
 
 // GetMetafield get individual metafield for a product
-func (s *ProductServiceOp) GetMetafield(productID int, metafieldID int, options interface{}) (*Metafield, error) {
+func (s *ProductAPIOp) GetMetafield(productID int, metafieldID int, options interface{}) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: productsResourceName, resourceID: productID}
 	return metafieldAPI.Get(metafieldID, options)
 }
 
 // CreateMetafield create a new metafield for a product
-func (s *ProductServiceOp) CreateMetafield(productID int, metafield Metafield) (*Metafield, error) {
+func (s *ProductAPIOp) CreateMetafield(productID int, metafield Metafield) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: productsResourceName, resourceID: productID}
 	return metafieldAPI.Create(metafield)
 }
 
 // UpdateMetafield update an existing metafield for a product
-func (s *ProductServiceOp) UpdateMetafield(productID int, metafield Metafield) (*Metafield, error) {
+func (s *ProductAPIOp) UpdateMetafield(productID int, metafield Metafield) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: productsResourceName, resourceID: productID}
 	return metafieldAPI.Update(metafield)
 }
 
 // DeleteMetafield delete an existing metafield for a product
-func (s *ProductServiceOp) DeleteMetafield(productID int, metafieldID int) error {
+func (s *ProductAPIOp) DeleteMetafield(productID int, metafieldID int) error {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: productsResourceName, resourceID: productID}
 	return metafieldAPI.Delete(metafieldID)
 }

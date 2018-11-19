@@ -8,10 +8,10 @@ import (
 const customCollectionsBasePath = "admin/custom_collections"
 const customCollectionsResourceName = "collections"
 
-// CustomCollectionService is an interface for interacting with the custom
+// CustomCollectionAPI is an interface for interacting with the custom
 // collection endpoints of the Shopify API.
 // See https://help.shopify.com/api/reference/customcollection
-type CustomCollectionService interface {
+type CustomCollectionAPI interface {
 	List(interface{}) ([]CustomCollection, error)
 	Count(interface{}) (int, error)
 	Get(int, interface{}) (*CustomCollection, error)
@@ -23,9 +23,9 @@ type CustomCollectionService interface {
 	MetafieldsAPI
 }
 
-// CustomCollectionServiceOp handles communication with the custom collection
+// CustomCollectionAPIOp handles communication with the custom collection
 // related methods of the Shopify API.
-type CustomCollectionServiceOp struct {
+type CustomCollectionAPIOp struct {
 	client *Client
 }
 
@@ -56,7 +56,7 @@ type CustomCollectionsResource struct {
 }
 
 // List custom collections
-func (s *CustomCollectionServiceOp) List(options interface{}) ([]CustomCollection, error) {
+func (s *CustomCollectionAPIOp) List(options interface{}) ([]CustomCollection, error) {
 	path := fmt.Sprintf("%s.json", customCollectionsBasePath)
 	resource := new(CustomCollectionsResource)
 	err := s.client.Get(path, resource, options)
@@ -64,13 +64,13 @@ func (s *CustomCollectionServiceOp) List(options interface{}) ([]CustomCollectio
 }
 
 // Count custom collections
-func (s *CustomCollectionServiceOp) Count(options interface{}) (int, error) {
+func (s *CustomCollectionAPIOp) Count(options interface{}) (int, error) {
 	path := fmt.Sprintf("%s/count.json", customCollectionsBasePath)
 	return s.client.Count(path, options)
 }
 
 // Get individual custom collection
-func (s *CustomCollectionServiceOp) Get(collectionID int, options interface{}) (*CustomCollection, error) {
+func (s *CustomCollectionAPIOp) Get(collectionID int, options interface{}) (*CustomCollection, error) {
 	path := fmt.Sprintf("%s/%d.json", customCollectionsBasePath, collectionID)
 	resource := new(CustomCollectionResource)
 	err := s.client.Get(path, resource, options)
@@ -79,7 +79,7 @@ func (s *CustomCollectionServiceOp) Get(collectionID int, options interface{}) (
 
 // Create a new custom collection
 // See Image for the details of the Image creation for a collection.
-func (s *CustomCollectionServiceOp) Create(collection CustomCollection) (*CustomCollection, error) {
+func (s *CustomCollectionAPIOp) Create(collection CustomCollection) (*CustomCollection, error) {
 	path := fmt.Sprintf("%s.json", customCollectionsBasePath)
 	wrappedData := CustomCollectionResource{Collection: &collection}
 	resource := new(CustomCollectionResource)
@@ -88,7 +88,7 @@ func (s *CustomCollectionServiceOp) Create(collection CustomCollection) (*Custom
 }
 
 // Update an existing custom collection
-func (s *CustomCollectionServiceOp) Update(collection CustomCollection) (*CustomCollection, error) {
+func (s *CustomCollectionAPIOp) Update(collection CustomCollection) (*CustomCollection, error) {
 	path := fmt.Sprintf("%s/%d.json", customCollectionsBasePath, collection.ID)
 	wrappedData := CustomCollectionResource{Collection: &collection}
 	resource := new(CustomCollectionResource)
@@ -97,42 +97,42 @@ func (s *CustomCollectionServiceOp) Update(collection CustomCollection) (*Custom
 }
 
 // Delete an existing custom collection.
-func (s *CustomCollectionServiceOp) Delete(collectionID int) error {
+func (s *CustomCollectionAPIOp) Delete(collectionID int) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d.json", customCollectionsBasePath, collectionID))
 }
 
 // ListMetafields list metafields for a custom collection
-func (s *CustomCollectionServiceOp) ListMetafields(customCollectionID int, options interface{}) ([]Metafield, error) {
+func (s *CustomCollectionAPIOp) ListMetafields(customCollectionID int, options interface{}) ([]Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
 	return metafieldAPI.List(options)
 }
 
 // CountMetafields count metafields for a custom collection
-func (s *CustomCollectionServiceOp) CountMetafields(customCollectionID int, options interface{}) (int, error) {
+func (s *CustomCollectionAPIOp) CountMetafields(customCollectionID int, options interface{}) (int, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
 	return metafieldAPI.Count(options)
 }
 
 // GetMetafield get individual metafield for a custom collection
-func (s *CustomCollectionServiceOp) GetMetafield(customCollectionID int, metafieldID int, options interface{}) (*Metafield, error) {
+func (s *CustomCollectionAPIOp) GetMetafield(customCollectionID int, metafieldID int, options interface{}) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
 	return metafieldAPI.Get(metafieldID, options)
 }
 
 // CreateMetafield create a new metafield for a custom collection
-func (s *CustomCollectionServiceOp) CreateMetafield(customCollectionID int, metafield Metafield) (*Metafield, error) {
+func (s *CustomCollectionAPIOp) CreateMetafield(customCollectionID int, metafield Metafield) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
 	return metafieldAPI.Create(metafield)
 }
 
 // UpdateMetafield update an existing metafield for a custom collection
-func (s *CustomCollectionServiceOp) UpdateMetafield(customCollectionID int, metafield Metafield) (*Metafield, error) {
+func (s *CustomCollectionAPIOp) UpdateMetafield(customCollectionID int, metafield Metafield) (*Metafield, error) {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
 	return metafieldAPI.Update(metafield)
 }
 
 // DeleteMetafield delete an existing metafield for a custom collection
-func (s *CustomCollectionServiceOp) DeleteMetafield(customCollectionID int, metafieldID int) error {
+func (s *CustomCollectionAPIOp) DeleteMetafield(customCollectionID int, metafieldID int) error {
 	metafieldAPI := &MetafieldAPIOp{client: s.client, resource: customCollectionsResourceName, resourceID: customCollectionID}
 	return metafieldAPI.Delete(metafieldID)
 }

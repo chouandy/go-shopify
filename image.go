@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-// ImageService is an interface for interacting with the image endpoints
+// ImageAPI is an interface for interacting with the image endpoints
 // of the Shopify API.
 // See https://help.shopify.com/api/reference/product_image
-type ImageService interface {
+type ImageAPI interface {
 	List(int, interface{}) ([]Image, error)
 	Count(int, interface{}) (int, error)
 	Get(int, int, interface{}) (*Image, error)
@@ -17,9 +17,9 @@ type ImageService interface {
 	Delete(int, int) error
 }
 
-// ImageServiceOp handles communication with the image related methods of
+// ImageAPIOp handles communication with the image related methods of
 // the Shopify API.
-type ImageServiceOp struct {
+type ImageAPIOp struct {
 	client *Client
 }
 
@@ -49,7 +49,7 @@ type ImagesResource struct {
 }
 
 // List images
-func (s *ImageServiceOp) List(productID int, options interface{}) ([]Image, error) {
+func (s *ImageAPIOp) List(productID int, options interface{}) ([]Image, error) {
 	path := fmt.Sprintf("%s/%d/images.json", productsBasePath, productID)
 	resource := new(ImagesResource)
 	err := s.client.Get(path, resource, options)
@@ -57,13 +57,13 @@ func (s *ImageServiceOp) List(productID int, options interface{}) ([]Image, erro
 }
 
 // Count images
-func (s *ImageServiceOp) Count(productID int, options interface{}) (int, error) {
+func (s *ImageAPIOp) Count(productID int, options interface{}) (int, error) {
 	path := fmt.Sprintf("%s/%d/images/count.json", productsBasePath, productID)
 	return s.client.Count(path, options)
 }
 
 // Get individual image
-func (s *ImageServiceOp) Get(productID int, imageID int, options interface{}) (*Image, error) {
+func (s *ImageAPIOp) Get(productID int, imageID int, options interface{}) (*Image, error) {
 	path := fmt.Sprintf("%s/%d/images/%d.json", productsBasePath, productID, imageID)
 	resource := new(ImageResource)
 	err := s.client.Get(path, resource, options)
@@ -83,7 +83,7 @@ func (s *ImageServiceOp) Get(productID int, imageID int, options interface{}) (*
 // Shopify will take the attachment.
 //
 // Shopify will accept Image.Attachment without Image.Filename.
-func (s *ImageServiceOp) Create(productID int, image Image) (*Image, error) {
+func (s *ImageAPIOp) Create(productID int, image Image) (*Image, error) {
 	path := fmt.Sprintf("%s/%d/images.json", productsBasePath, productID)
 	wrappedData := ImageResource{Image: &image}
 	resource := new(ImageResource)
@@ -92,7 +92,7 @@ func (s *ImageServiceOp) Create(productID int, image Image) (*Image, error) {
 }
 
 // Update an existing image
-func (s *ImageServiceOp) Update(productID int, image Image) (*Image, error) {
+func (s *ImageAPIOp) Update(productID int, image Image) (*Image, error) {
 	path := fmt.Sprintf("%s/%d/images/%d.json", productsBasePath, productID, image.ID)
 	wrappedData := ImageResource{Image: &image}
 	resource := new(ImageResource)
@@ -101,6 +101,6 @@ func (s *ImageServiceOp) Update(productID int, image Image) (*Image, error) {
 }
 
 // Delete an existing image
-func (s *ImageServiceOp) Delete(productID int, imageID int) error {
+func (s *ImageAPIOp) Delete(productID int, imageID int) error {
 	return s.client.Delete(fmt.Sprintf("%s/%d/images/%d.json", productsBasePath, productID, imageID))
 }

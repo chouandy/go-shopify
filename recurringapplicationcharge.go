@@ -10,10 +10,10 @@ import (
 
 const recurringApplicationChargesBasePath = "admin/recurring_application_charges"
 
-// RecurringApplicationChargeService is an interface for interacting with the
+// RecurringApplicationChargeAPI is an interface for interacting with the
 // RecurringApplicationCharge endpoints of the Shopify API.
 // See https://help.shopify.com/api/reference/billing/recurringapplicationcharge
-type RecurringApplicationChargeService interface {
+type RecurringApplicationChargeAPI interface {
 	Create(RecurringApplicationCharge) (*RecurringApplicationCharge, error)
 	Get(int, interface{}) (*RecurringApplicationCharge, error)
 	List(interface{}) ([]RecurringApplicationCharge, error)
@@ -22,9 +22,9 @@ type RecurringApplicationChargeService interface {
 	Update(int, int) (*RecurringApplicationCharge, error)
 }
 
-// RecurringApplicationChargeServiceOp handles communication with the
+// RecurringApplicationChargeAPIOp handles communication with the
 // RecurringApplicationCharge related methods of the Shopify API.
-type RecurringApplicationChargeServiceOp struct {
+type RecurringApplicationChargeAPIOp struct {
 	client *Client
 }
 
@@ -125,7 +125,7 @@ type RecurringApplicationChargesResource struct {
 }
 
 // Create creates new recurring application charge.
-func (r *RecurringApplicationChargeServiceOp) Create(charge RecurringApplicationCharge) (
+func (r *RecurringApplicationChargeAPIOp) Create(charge RecurringApplicationCharge) (
 	*RecurringApplicationCharge, error) {
 
 	path := fmt.Sprintf("%s.json", recurringApplicationChargesBasePath)
@@ -136,7 +136,7 @@ func (r *RecurringApplicationChargeServiceOp) Create(charge RecurringApplication
 }
 
 // Get gets individual recurring application charge.
-func (r *RecurringApplicationChargeServiceOp) Get(chargeID int, options interface{}) (
+func (r *RecurringApplicationChargeAPIOp) Get(chargeID int, options interface{}) (
 	*RecurringApplicationCharge, error) {
 
 	path := fmt.Sprintf("%s/%d.json", recurringApplicationChargesBasePath, chargeID)
@@ -146,7 +146,7 @@ func (r *RecurringApplicationChargeServiceOp) Get(chargeID int, options interfac
 }
 
 // List gets all recurring application charges.
-func (r *RecurringApplicationChargeServiceOp) List(options interface{}) (
+func (r *RecurringApplicationChargeAPIOp) List(options interface{}) (
 	[]RecurringApplicationCharge, error) {
 
 	path := fmt.Sprintf("%s.json", recurringApplicationChargesBasePath)
@@ -156,7 +156,7 @@ func (r *RecurringApplicationChargeServiceOp) List(options interface{}) (
 }
 
 // Activate activates recurring application charge.
-func (r *RecurringApplicationChargeServiceOp) Activate(charge RecurringApplicationCharge) (
+func (r *RecurringApplicationChargeAPIOp) Activate(charge RecurringApplicationCharge) (
 	*RecurringApplicationCharge, error) {
 
 	path := fmt.Sprintf("%s/%d/activate.json", recurringApplicationChargesBasePath, charge.ID)
@@ -167,12 +167,12 @@ func (r *RecurringApplicationChargeServiceOp) Activate(charge RecurringApplicati
 }
 
 // Delete deletes recurring application charge.
-func (r *RecurringApplicationChargeServiceOp) Delete(chargeID int) error {
+func (r *RecurringApplicationChargeAPIOp) Delete(chargeID int) error {
 	return r.client.Delete(fmt.Sprintf("%s/%d.json", recurringApplicationChargesBasePath, chargeID))
 }
 
 // Update updates recurring application charge.
-func (r *RecurringApplicationChargeServiceOp) Update(chargeID, newCappedAmount int) (
+func (r *RecurringApplicationChargeAPIOp) Update(chargeID, newCappedAmount int) (
 	*RecurringApplicationCharge, error) {
 
 	path := fmt.Sprintf("%s/%d/customize.json?recurring_application_charge[capped_amount]=%d",
