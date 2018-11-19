@@ -10,7 +10,7 @@ The new home of Conversio's Shopify Go library.
 ## Install
 
 ```console
-$ go get github.com/bold-commerce/go-shopify
+go get github.com/bold-commerce/go-shopify
 ```
 
 ## Use
@@ -21,7 +21,7 @@ import "github.com/bold-commerce/go-shopify"
 
 This gives you access to the `goshopify` package.
 
-#### Oauth
+### Oauth
 
 If you don't have an access token yet, you can obtain one with the oauth flow.
 Something like this will work:
@@ -60,7 +60,7 @@ func MyCallbackHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-#### Api calls with a token
+### Api calls with a token
 
 With a permanent access token, you can make API calls like this:
 
@@ -80,15 +80,15 @@ client := goshopify.NewClient(app, "shopname", "token")
 numProducts, err := client.Product.Count(nil)
 ```
 
-#### Private App Auth
+### Private App Auth
 
 Private Shopify apps use basic authentication and do not require going through the OAuth flow. Here is an example:
 
 ```go
 // Create an app somewhere.
 app := goshopify.App{
-	APIKey: "apikey",
-	Password: "apipassword",
+    APIKey: "apikey",
+    Password: "apipassword",
 }
 
 // Create a new API client (notice the token parameter is the empty string)
@@ -98,7 +98,7 @@ client := goshopify.NewClient(app, "shopname", "")
 numProducts, err := client.Product.Count(nil)
 ```
 
-#### Query options
+### Query options
 
 Most API functions take an options `interface{}` as parameter. You can use one
 from the library or create your own. For example, to fetch the number of
@@ -128,7 +128,7 @@ options := struct {
 orderCount, err := client.Order.Count(options)
 ```
 
-#### Using your own models
+### Using your own models
 
 Not all endpoints are implemented right now. In those case, feel free to
 implement them and make a PR, or you can create your own struct for the data
@@ -162,7 +162,7 @@ func FetchWebhooks() ([]Webhook, error) {
 }
 ```
 
-#### Webhooks verification
+### Webhooks verification
 
 In order to be sure that a webhook is sent from ShopifyApi you could easily verify
 it with the `VerifyWebhookRequest` method.
@@ -181,10 +181,10 @@ func ValidateWebhook(httpRequest *http.Request) (bool) {
 There's nothing special to note about the tests except that if you have Docker
 and Compose installed, you can test like this:
 
-    $ docker-compose build dev
-    $ docker-compose run --rm dev
+    docker-compose build dev
+    docker-compose run --rm dev
 
 Testing the package is the default command for the dev container. To create a
 coverage profile:
 
-    $ docker-compose run --rm dev bash -c 'go test -coverprofile=coverage.out ./... && go tool cover -html coverage.out -o coverage.html'
+    docker-compose run --rm dev bash -c 'go test -coverprofile=coverage.out ./... && go tool cover -html coverage.out -o coverage.html'
