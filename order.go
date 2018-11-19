@@ -99,7 +99,7 @@ type Order struct {
 	OrderNumber           int              `json:"order_number,omitempty"`
 	Note                  string           `json:"note,omitempty"`
 	Test                  *bool            `json:"test,omitempty"`
-	BrowserIp             string           `json:"browser_ip,omitempty"`
+	BrowserIP             string           `json:"browser_ip,omitempty"`
 	BuyerAcceptsMarketing *bool            `json:"buyer_accepts_marketing,omitempty"`
 	CancelReason          string           `json:"cancel_reason,omitempty"`
 	NoteAttributes        []NoteAttribute  `json:"note_attributes,omitempty"`
@@ -268,7 +268,7 @@ type Transaction struct {
 type ClientDetails struct {
 	AcceptLanguage string `json:"accept_language,omitempty"`
 	BrowserHeight  int    `json:"browser_height,omitempty"`
-	BrowserIp      string `json:"browser_ip,omitempty"`
+	BrowserIP      string `json:"browser_ip,omitempty"`
 	BrowserWidth   int    `json:"browser_width,omitempty"`
 	SessionHash    string `json:"session_hash,omitempty"`
 	UserAgent      string `json:"user_agent,omitempty"`
