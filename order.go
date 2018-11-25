@@ -120,6 +120,7 @@ type Order struct {
 	Refunds               []Refund         `json:"refunds,omitempty"`
 	UserID                int              `json:"user_id,omitempty"`
 	OrderStatusURL        string           `json:"order_status_url,omitempty"`
+	StatusURL             string           `json:"status_url,omitempty"`
 	Gateway               string           `json:"gateway,omitempty"`
 	Confirmed             *bool            `json:"confirmed,omitempty"`
 	TotalPriceUSD         *decimal.Decimal `json:"total_price_usd,omitempty"`
@@ -233,6 +234,7 @@ type ShippingLine struct {
 	DeliveryCategory              string           `json:"delivery_category,omitempty"`
 	CarrierIdentifier             string           `json:"carrier_identifier,omitempty"`
 	TaxLines                      []TaxLine        `json:"tax_lines,omitempty"`
+	Handle                        string           `json:"handle,omitempty"`
 }
 
 // TaxLine tax line struct

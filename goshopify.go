@@ -50,6 +50,7 @@ type Client struct {
 	ApplicationCharge          ApplicationChargeAPI
 	Asset                      AssetAPI
 	Blog                       BlogAPI
+	Checkout                   CheckoutAPI
 	CustomCollection           CustomCollectionAPI
 	Customer                   CustomerAPI
 	CustomerAddress            CustomerAddressAPI
@@ -189,6 +190,7 @@ func NewClient(app App, shopName, token string) *Client {
 	c.ApplicationCharge = &ApplicationChargeAPIOp{client: c}
 	c.Asset = &AssetAPIOp{client: c}
 	c.Blog = &BlogAPIOp{client: c}
+	c.Checkout = &CheckoutAPIOp{client: c}
 	c.CustomCollection = &CustomCollectionAPIOp{client: c}
 	c.Customer = &CustomerAPIOp{client: c}
 	c.CustomerAddress = &CustomerAddressAPIOp{client: c}
