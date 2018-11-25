@@ -59,6 +59,7 @@ type Client struct {
 	Order                      OrderAPI
 	Page                       PageAPI
 	Product                    ProductAPI
+	ProductListing             ProductListingAPI
 	RecurringApplicationCharge RecurringApplicationChargeAPI
 	Redirect                   RedirectAPI
 	ScriptTag                  ScriptTagAPI
@@ -197,6 +198,7 @@ func NewClient(app App, shopName, token string) *Client {
 	c.Order = &OrderAPIOp{client: c}
 	c.Page = &PageAPIOp{client: c}
 	c.Product = &ProductAPIOp{client: c}
+	c.ProductListing = &ProductListingAPIOp{client: c}
 	c.RecurringApplicationCharge = &RecurringApplicationChargeAPIOp{client: c}
 	c.Redirect = &RedirectAPIOp{client: c}
 	c.ScriptTag = &ScriptTagAPIOp{client: c}
