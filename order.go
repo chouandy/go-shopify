@@ -52,20 +52,21 @@ type OrderCountOptions struct {
 // OrderListOptions a struct for all available order list options.
 // See: https://help.shopify.com/api/reference/order#index
 type OrderListOptions struct {
-	Page              int       `url:"page,omitempty"`
-	Limit             int       `url:"limit,omitempty"`
-	SinceID           int       `url:"since_id,omitempty"`
-	Status            string    `url:"status,omitempty"`
-	FinancialStatus   string    `url:"financial_status,omitempty"`
-	FulfillmentStatus string    `url:"fulfillment_status,omitempty"`
-	CreatedAtMin      time.Time `url:"created_at_min,omitempty"`
-	CreatedAtMax      time.Time `url:"created_at_max,omitempty"`
-	UpdatedAtMin      time.Time `url:"updated_at_min,omitempty"`
-	UpdatedAtMax      time.Time `url:"updated_at_max,omitempty"`
-	ProcessedAtMin    time.Time `url:"processed_at_min,omitempty"`
-	ProcessedAtMax    time.Time `url:"processed_at_max,omitempty"`
-	Fields            string    `url:"fields,omitempty"`
-	Order             string    `url:"order,omitempty"`
+	IDs               []int      `url:"ids,omitempty,comma"`
+	Limit             int        `url:"limit,omitempty"`
+	Page              int        `url:"page,omitempty"`
+	SinceID           int        `url:"since_id,omitempty"`
+	CreatedAtMin      *time.Time `url:"created_at_min,omitempty"`
+	CreatedAtMax      *time.Time `url:"created_at_max,omitempty"`
+	UpdatedAtMin      *time.Time `url:"updated_at_min,omitempty"`
+	UpdatedAtMax      *time.Time `url:"updated_at_max,omitempty"`
+	ProcessedAtMin    *time.Time `url:"processed_at_min,omitempty"`
+	ProcessedAtMax    *time.Time `url:"processed_at_max,omitempty"`
+	AttributionAppID  int        `url:"attribution_app_id,omitempty"`
+	Status            string     `url:"status,omitempty"`
+	FinancialStatus   string     `url:"financial_status,omitempty"`
+	FulfillmentStatus string     `url:"fulfillment_status,omitempty"`
+	Fields            string     `url:"fields,omitempty"`
 }
 
 // Order represents a Shopify order
