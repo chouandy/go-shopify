@@ -37,7 +37,7 @@ type Checkout struct {
 	CustomerID          int                    `json:"customer_id,omitempty"`
 	CustomerLocale      string                 `json:"customer_locale,omitempty"`
 	DeviceID            int                    `json:"device_id,omitempty"`
-	DiscountCode        DiscountCode           `json:"discount_code,omitempty"`
+	DiscountCode        string                 `json:"discount_code,omitempty"`
 	Email               string                 `json:"email,omitempty"`
 	LegalNoticeURL      string                 `json:"legal_notice_url,omitempty"`
 	LocationID          int                    `json:"location_id,omitempty"`
