@@ -93,7 +93,7 @@ type Order struct {
 	TotalWeight           int              `json:"total_weight,omitempty"`
 	FinancialStatus       string           `json:"financial_status,omitempty"`
 	Fulfillments          []Fulfillment    `json:"fulfillments,omitempty"`
-	FulfillmentStatus     string           `json:"fulfillment_status,omitempty"`
+	FulfillmentStatus     *string          `json:"fulfillment_status"`
 	Token                 string           `json:"token,omitempty"`
 	CartToken             string           `json:"cart_token,omitempty"`
 	Number                int              `json:"number,omitempty"`
