@@ -51,11 +51,13 @@ type Client struct {
 	Asset                      AssetAPI
 	Blog                       BlogAPI
 	Checkout                   CheckoutAPI
+	Collect                    CollectAPI
 	CustomCollection           CustomCollectionAPI
 	Customer                   CustomerAPI
 	CustomerAddress            CustomerAddressAPI
 	FulfillmentService         FulfillmentServiceAPI
 	Image                      ImageAPI
+	Location                   LocationAPI
 	Metafield                  MetafieldAPI
 	Order                      OrderAPI
 	Page                       PageAPI
@@ -191,11 +193,13 @@ func NewClient(app App, shopName, token string) *Client {
 	c.Asset = &AssetAPIOp{client: c}
 	c.Blog = &BlogAPIOp{client: c}
 	c.Checkout = &CheckoutAPIOp{client: c}
+	c.Collect = &CollectAPIOp{client: c}
 	c.CustomCollection = &CustomCollectionAPIOp{client: c}
 	c.Customer = &CustomerAPIOp{client: c}
 	c.CustomerAddress = &CustomerAddressAPIOp{client: c}
 	c.FulfillmentService = &FulfillmentServiceAPIOp{client: c}
 	c.Image = &ImageAPIOp{client: c}
+	c.Location = &LocationAPIOp{client: c}
 	c.Metafield = &MetafieldAPIOp{client: c}
 	c.Order = &OrderAPIOp{client: c}
 	c.Page = &PageAPIOp{client: c}

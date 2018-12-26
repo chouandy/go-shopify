@@ -22,6 +22,7 @@ type CustomerAPI interface {
 	Update(Customer) (*Customer, error)
 	Delete(int) error
 	ListOrders(int, interface{}) ([]Order, error)
+	ListTags(interface{}) ([]string, error)
 
 	// MetafieldsAPI used for Customer resource to communicate with Metafields resource
 	MetafieldsAPI
@@ -66,6 +67,11 @@ type CustomerResource struct {
 // CustomersResource represents the result from the customers.json endpoint
 type CustomersResource struct {
 	Customers []Customer `json:"customers"`
+}
+
+// CustomerTagsResource represents the result from the customers/tags.json endpoint
+type CustomerTagsResource struct {
+	Tags []string `json:"tags"`
 }
 
 // CustomerSearchOptions represents the options available when searching for a customer
@@ -173,4 +179,12 @@ func (s *CustomerAPIOp) ListOrders(customerID int, options interface{}) ([]Order
 	resource := new(OrdersResource)
 	err := s.client.Get(path, resource, options)
 	return resource.Orders, err
+}
+
+// ListTags retrieves all unique tags across all customers
+func (s *CustomerAPIOp) ListTags(options interface{}) ([]string, error) {
+	path := fmt.Sprintf("%s/tags.json", customersBasePath)
+	resource := new(CustomerTagsResource)
+	err := s.client.Get(path, resource, options)
+	return resource.Tags, err
 }

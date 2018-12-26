@@ -151,3 +151,45 @@ func TestBoolValue(t *testing.T) {
 		}
 	}
 }
+
+func TestString(t *testing.T) {
+	cases := []struct {
+		value    string
+		expected string
+	}{
+		{
+			"string",
+			"*string",
+		},
+	}
+
+	for _, c := range cases {
+		actual := reflect.TypeOf(String(c.value)).String()
+		if actual != c.expected {
+			t.Errorf("String(%v): expected %s, actual %s", c.value, c.expected, actual)
+		}
+	}
+}
+
+func TestStringValue(t *testing.T) {
+	cases := []struct {
+		value    *string
+		expected string
+	}{
+		{
+			nil,
+			"string",
+		},
+		{
+			String("string"),
+			"string",
+		},
+	}
+
+	for _, c := range cases {
+		actual := reflect.TypeOf(StringValue(c.value)).String()
+		if actual != c.expected {
+			t.Errorf("StringValue(%v): expected %s, actual %s", c.value, c.expected, actual)
+		}
+	}
+}
