@@ -549,3 +549,122 @@ func TestOrderCancelFulfillment(t *testing.T) {
 
 	FulfillmentTests(t, *returnedFulfillment)
 }
+
+func TestOrderListRefunds(t *testing.T) {
+	setup()
+	defer teardown()
+
+	httpmock.RegisterResponder("GET", "https://fooshop.myshopify.com/admin/orders/1/refunds.json",
+		httpmock.NewStringResponder(200, `{"refunds": [{"id":1},{"id":2}]}`))
+
+	refunds, err := client.Order.ListRefunds(1, nil)
+	if err != nil {
+		t.Errorf("Order.ListRefunds() returned error: %v", err)
+	}
+
+	expected := []Refund{{ID: 1}, {ID: 2}}
+	if !reflect.DeepEqual(refunds, expected) {
+		t.Errorf("Order.ListRefunds() returned %+v, expected %+v", refunds, expected)
+	}
+}
+
+func TestOrderGetRefund(t *testing.T) {
+	setup()
+	defer teardown()
+
+	httpmock.RegisterResponder("GET", "https://fooshop.myshopify.com/admin/orders/1/refunds/2.json",
+		httpmock.NewStringResponder(200, `{"refund": {"id":2}}`))
+
+	refund, err := client.Order.GetRefund(1, 2, nil)
+	if err != nil {
+		t.Errorf("Order.GetRefund() returned error: %v", err)
+	}
+
+	expected := &Refund{ID: 2}
+	if !reflect.DeepEqual(refund, expected) {
+		t.Errorf("Order.GetRefund() returned %+v, expected %+v", refund, expected)
+	}
+}
+
+func TestOrderCalculateRefund(t *testing.T) {
+	setup()
+	defer teardown()
+
+	httpmock.RegisterResponder("POST", "https://fooshop.myshopify.com/admin/orders/1/refunds/calculate.json",
+		httpmock.NewBytesResponder(200, loadFixture("refund_calculate.json")))
+
+	refund := Refund{
+		Currency: "USD",
+		Notify:   Bool(true),
+		Note:     "wrong size",
+		Shipping: &Shipping{
+			FullRefund: Bool(true),
+		},
+		RefundLineItems: []RefundLineItem{
+			{
+				LineItemID:  518995019,
+				Quantity:    1,
+				RestockType: "no_restock",
+			},
+		},
+	}
+
+	returnedRefund, err := client.Order.CalculateRefund(1, refund)
+	if err != nil {
+		t.Errorf("Order.CalculateRefund returned error: %v", err)
+	}
+
+	expectedInt := 518995019
+	if returnedRefund.RefundLineItems[0].LineItemID != expectedInt {
+		t.Errorf("Refund.RefundLineItems[0].LineItemID returned %+v, expected %+v", refund.ID, expectedInt)
+	}
+	expectedInt = 1
+	if returnedRefund.RefundLineItems[0].Quantity != expectedInt {
+		t.Errorf("Refund.RefundLineItems[0].Quantity returned %+v, expected %+v", refund.ID, expectedInt)
+	}
+	expectedStr := "no_restock"
+	if returnedRefund.RefundLineItems[0].RestockType != expectedStr {
+		t.Errorf("Refund.RefundLineItems[0].RestockType returned %+v, expected %+v", refund.ID, expectedInt)
+	}
+}
+
+func TestOrderCreateRefund(t *testing.T) {
+	setup()
+	defer teardown()
+
+	httpmock.RegisterResponder("POST", "https://fooshop.myshopify.com/admin/orders/1/refunds.json",
+		httpmock.NewBytesResponder(200, loadFixture("refund.json")))
+
+	amount := decimal.NewFromFloat(41.94)
+	refund := Refund{
+		Currency: "USD",
+		Notify:   Bool(true),
+		Note:     "wrong size",
+		Shipping: &Shipping{
+			FullRefund: Bool(true),
+		},
+		RefundLineItems: []RefundLineItem{
+			{
+				LineItemID:  518995019,
+				Quantity:    1,
+				RestockType: "return",
+				LocationID:  Int(487838322),
+			},
+		},
+		Transactions: []Transaction{
+			{
+				ParentID: Int(801038806),
+				Amount:   &amount,
+				Kind:     "refund",
+				Gateway:  "bogus",
+			},
+		},
+	}
+
+	returnedRefund, err := client.Order.CreateRefund(1, refund)
+	if err != nil {
+		t.Errorf("Order.CreateRefund() returned error: %v", err)
+	}
+
+	RefundTests(t, *returnedRefund)
+}

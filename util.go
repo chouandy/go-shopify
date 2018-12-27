@@ -50,6 +50,17 @@ func FulfillmentPathPrefix(resource string, resourceID int) string {
 	return prefix
 }
 
+// RefundPathPrefix return the prefix for a refund path
+func RefundPathPrefix(resource string, resourceID int) string {
+	var prefix string
+	if len(resource) == 0 {
+		prefix = "admin/refunds"
+	} else {
+		prefix = fmt.Sprintf("admin/%s/%d/refunds", resource, resourceID)
+	}
+	return prefix
+}
+
 // Bool returns a pointer to the bool value passed in.
 func Bool(v bool) *bool {
 	return &v
@@ -76,4 +87,18 @@ func StringValue(v *string) string {
 		return *v
 	}
 	return ""
+}
+
+// Int returns a pointer to the int value passed in.
+func Int(v int) *int {
+	return &v
+}
+
+// IntValue returns the value of the int pointer passed in or
+// false if the pointer is nil.
+func IntValue(v *int) int {
+	if v != nil {
+		return *v
+	}
+	return 0
 }

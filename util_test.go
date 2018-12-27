@@ -102,6 +102,24 @@ func TestFulfillmentPathPrefix(t *testing.T) {
 	}
 }
 
+func TestRefundPathPrefix(t *testing.T) {
+	cases := []struct {
+		resource   string
+		resourceID int
+		expected   string
+	}{
+		{"", 0, "admin/refunds"},
+		{"orders", 123, "admin/orders/123/refunds"},
+	}
+
+	for _, c := range cases {
+		actual := RefundPathPrefix(c.resource, c.resourceID)
+		if actual != c.expected {
+			t.Errorf("RefundPathPrefix(%s, %d): expected %s, actual %s", c.resource, c.resourceID, c.expected, actual)
+		}
+	}
+}
+
 func TestBool(t *testing.T) {
 	cases := []struct {
 		value    bool
@@ -190,6 +208,48 @@ func TestStringValue(t *testing.T) {
 		actual := reflect.TypeOf(StringValue(c.value)).String()
 		if actual != c.expected {
 			t.Errorf("StringValue(%v): expected %s, actual %s", c.value, c.expected, actual)
+		}
+	}
+}
+
+func TestInt(t *testing.T) {
+	cases := []struct {
+		value    int
+		expected string
+	}{
+		{
+			123,
+			"*int",
+		},
+	}
+
+	for _, c := range cases {
+		actual := reflect.TypeOf(Int(c.value)).String()
+		if actual != c.expected {
+			t.Errorf("Int(%v): expected %s, actual %s", c.value, c.expected, actual)
+		}
+	}
+}
+
+func TestIntValue(t *testing.T) {
+	cases := []struct {
+		value    *int
+		expected string
+	}{
+		{
+			nil,
+			"int",
+		},
+		{
+			Int(123),
+			"int",
+		},
+	}
+
+	for _, c := range cases {
+		actual := reflect.TypeOf(IntValue(c.value)).String()
+		if actual != c.expected {
+			t.Errorf("IntValue(%v): expected %s, actual %s", c.value, c.expected, actual)
 		}
 	}
 }

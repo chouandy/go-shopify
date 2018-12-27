@@ -25,6 +25,9 @@ type OrderAPI interface {
 
 	// FulfillmentsAPI used for Order resource to communicate with Fulfillments resource
 	FulfillmentsAPI
+
+	// RefundsAPI used for Order resource to communicate with Refunds resource
+	RefundsAPI
 }
 
 // OrderAPIOp handles communication with the order related methods of the
@@ -247,24 +250,25 @@ type TaxLine struct {
 
 // Transaction transaction struct
 type Transaction struct {
-	ID             int              `json:"id,omitempty"`
-	OrderID        int              `json:"order_id,omitempty"`
-	Amount         *decimal.Decimal `json:"amount,omitempty"`
-	Kind           string           `json:"kind,omitempty"`
-	Gateway        string           `json:"gateway,omitempty"`
-	Status         string           `json:"status,omitempty"`
-	Message        string           `json:"message,omitempty"`
-	CreatedAt      *time.Time       `json:"created_at,omitempty"`
-	Test           *bool            `json:"test,omitempty"`
-	Authorization  string           `json:"authorization,omitempty"`
-	Currency       string           `json:"currency,omitempty"`
-	LocationID     *int             `json:"location_id,omitempty"`
-	UserID         *int             `json:"user_id,omitempty"`
-	ParentID       *int             `json:"parent_id,omitempty"`
-	DeviceID       *int             `json:"device_id,omitempty"`
-	ErrorCode      string           `json:"error_code,omitempty"`
-	SourceName     string           `json:"source_name,omitempty"`
-	PaymentDetails *PaymentDetails  `json:"payment_details,omitempty"`
+	ID                int              `json:"id,omitempty"`
+	OrderID           int              `json:"order_id,omitempty"`
+	Amount            *decimal.Decimal `json:"amount,omitempty"`
+	Kind              string           `json:"kind,omitempty"`
+	Gateway           string           `json:"gateway,omitempty"`
+	Status            string           `json:"status,omitempty"`
+	Message           string           `json:"message,omitempty"`
+	CreatedAt         *time.Time       `json:"created_at,omitempty"`
+	Test              *bool            `json:"test,omitempty"`
+	Authorization     string           `json:"authorization,omitempty"`
+	Currency          string           `json:"currency,omitempty"`
+	LocationID        *int             `json:"location_id,omitempty"`
+	UserID            *int             `json:"user_id,omitempty"`
+	ParentID          *int             `json:"parent_id,omitempty"`
+	DeviceID          *int             `json:"device_id,omitempty"`
+	ErrorCode         string           `json:"error_code,omitempty"`
+	SourceName        string           `json:"source_name,omitempty"`
+	PaymentDetails    *PaymentDetails  `json:"payment_details,omitempty"`
+	MaximumRefundable *decimal.Decimal `json:"maximum_refundable,omitempty"`
 }
 
 // ClientDetails client details struct
@@ -275,28 +279,6 @@ type ClientDetails struct {
 	BrowserWidth   int    `json:"browser_width,omitempty"`
 	SessionHash    string `json:"session_hash,omitempty"`
 	UserAgent      string `json:"user_agent,omitempty"`
-}
-
-// Refund refund struct
-type Refund struct {
-	ID              int              `json:"id,omitempty"`
-	OrderID         int              `json:"order_id,omitempty"`
-	CreatedAt       *time.Time       `json:"created_at,omitempty"`
-	Note            string           `json:"note,omitempty"`
-	Restock         *bool            `json:"restock,omitempty"`
-	UserID          int              `json:"user_id,omitempty"`
-	RefundLineItems []RefundLineItem `json:"refund_line_items,omitempty"`
-	Transactions    []Transaction    `json:"transactions,omitempty"`
-}
-
-// RefundLineItem refund line item
-type RefundLineItem struct {
-	ID         int              `json:"id,omitempty"`
-	Quantity   int              `json:"quantity,omitempty"`
-	LineItemID int              `json:"line_item_id,omitempty"`
-	LineItem   *LineItem        `json:"line_item,omitempty"`
-	Subtotal   *decimal.Decimal `json:"subtotal,omitempty"`
-	TotalTax   *decimal.Decimal `json:"total_tax,omitempty"`
 }
 
 // List orders
@@ -421,4 +403,28 @@ func (s *OrderAPIOp) OpenFulfillment(orderID int, fulfillmentID int) (*Fulfillme
 func (s *OrderAPIOp) CancelFulfillment(orderID int, fulfillmentID int) (*Fulfillment, error) {
 	fulfillmentAPI := &FulfillmentAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
 	return fulfillmentAPI.Cancel(fulfillmentID)
+}
+
+// ListRefunds list refunds for an order
+func (s *OrderAPIOp) ListRefunds(orderID int, options interface{}) ([]Refund, error) {
+	refundAPI := &RefundAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return refundAPI.List(options)
+}
+
+// GetRefund get individual refund for an order
+func (s *OrderAPIOp) GetRefund(orderID int, refundID int, options interface{}) (*Refund, error) {
+	refundAPI := &RefundAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return refundAPI.Get(refundID, options)
+}
+
+// CalculateRefund calculate a refund for an order
+func (s *OrderAPIOp) CalculateRefund(orderID int, refund Refund) (*Refund, error) {
+	refundAPI := &RefundAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return refundAPI.Calculate(refund)
+}
+
+// CreateRefund create a new refund for an order
+func (s *OrderAPIOp) CreateRefund(orderID int, refund Refund) (*Refund, error) {
+	refundAPI := &RefundAPIOp{client: s.client, resource: ordersResourceName, resourceID: orderID}
+	return refundAPI.Create(refund)
 }
