@@ -69,7 +69,7 @@ type Checkout struct {
 	UpdatedAt           *time.Time             `json:"updated_at,omitempty"`
 	UserID              int                    `json:"user_id,omitempty"`
 	WebURL              string                 `json:"web_url,omitempty"`
-	LineItems           []CheckoutLineItem     `json:"line_items,omitempty"`
+	LineItems           []CheckoutLineItem     `json:"line_items"`
 	GiftCards           []GiftCard             `json:"gift_cards,omitempty"`
 	TaxLines            []TaxLine              `json:"tax_lines,omitempty"`
 	ShippingLine        *ShippingLine          `json:"shipping_line,omitempty"`
